@@ -1,7 +1,7 @@
 
 module.exports = function( table ) {
-    connection = require('../config/conexion');
-    bbdd = require( '../utility/mysql.js')(table);
+    connection = require('../back-end/config/conexion');
+    bbdd = require( '../back-end/utility/mysql.js')(table);
 
     function showAll (_, res) {
         connection.query(bbdd.showAll(), 

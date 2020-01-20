@@ -10,10 +10,6 @@ SET time_zone = "+00:00";
 
 /* ---------------------------------------------------------------------------------------------   */
 /*-------------------------------------------------TABLA MAESTRA---------------------------------------------*/
-CREATE TABLE `gender`(
-  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `name` varchar (20)  NOT NULL
-) ENGINE=InnoDB default character set utf8mb4;
 
 CREATE TABLE `country` (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -53,7 +49,7 @@ CREATE TABLE `user` (
   `password`  varchar(60) ,
   `name`  varchar(255) ,
   `age` int(3),
-  `id_gender` int NOT NULL,
+  `gender` enum('hombre', 'mujer', 'otro'),
   `id_country`  int NOT NULL ,
   `id_state`  int NOT NULL ,
   `id_social_media` int NOT NULL,
@@ -74,7 +70,6 @@ CREATE TABLE `user` (
   `token` text ,
   `last_visit` date NOT NULL,
   `active` tinyint(1) DEFAULT 1,
-  FOREIGN KEY(id_gender) REFERENCES gender(id),
   FOREIGN KEY(id_country) REFERENCES country(id),
   FOREIGN KEY(id_state) REFERENCES state(id)
 ) ENGINE=InnoDB default character set utf8mb4;
@@ -194,7 +189,7 @@ CREATE TABLE `message` (
 
 
 CREATE TABLE `user_social_media`(
-  `id_user` int NULL,
+  `id_user` int NOT NULL,
   `id_social_media` int NOT NULL,
   FOREIGN KEY(id_user) REFERENCES user(id),
   FOREIGN KEY(id_social_media) REFERENCES social_media(id),
@@ -202,8 +197,8 @@ CREATE TABLE `user_social_media`(
 ) ENGINE=InnoDB;
 
 CREATE TABLE `user_profile`(
-  `id_user` int,
-  `id_profile` int,
+  `id_user` int  NOT NULL,
+  `id_profile` int NOT NULL,
   FOREIGN KEY(id_user) REFERENCES user(id),
   FOREIGN KEY(id_profile) REFERENCES profile(id),
   PRIMARY KEY (id_user, id_profile)
@@ -225,6 +220,8 @@ CREATE TABLE `user_enterprise` (
   `request_status` enum('send','accepted','refused'),
   `admin` int(11) DEFAULT NULL, 
   `type_user` enum('basic','updater','admin'),
+  FOREIGN KEY(id_user) REFERENCES user(id),
+  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id),
   PRIMARY KEY (id_user, id_enterprise)
 ) ENGINE=InnoDB;
 
@@ -239,8 +236,8 @@ CREATE TABLE `user_project` (
 
 
 CREATE TABLE `enterprise_social_media`(
-  `id_enterprise` int,
-  `id_social_media` int,
+  `id_enterprise` int NOT NULL,
+  `id_social_media` int NOT NULL,
   FOREIGN KEY(id_enterprise) REFERENCES enterprise(id),
   FOREIGN KEY(id_social_media) REFERENCES social_media(id),
   PRIMARY KEY (id_enterprise, id_social_media)
@@ -254,5 +251,3 @@ CREATE TABLE `enterprise_project` (
   FOREIGN KEY(id_project) REFERENCES project(id),
   PRIMARY KEY (id_enterprise, id_project)
 ) ENGINE=InnoDB;
-
-/*Esta tabla esta mal, user debe ligarse con proyecto si participan en una empresa*/

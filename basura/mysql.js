@@ -1,8 +1,15 @@
-module.exports = function(table) {
-  function showAll() {
+
+let table = null;
+class utilityMySQL {
+
+  constructor(tabla){
+    table = tabla;
+  }
+  showAll() {
     return `SELECT * FROM ${table};`;
   }
-  function showById(id) {
+
+  showById(id) {
     return `SELECT * FROM ${table} WHERE id = '${id}' ;`;
   }
 
@@ -14,7 +21,7 @@ module.exports = function(table) {
           <String[]>          Joins -> nombre tablas a las que hacerle el join
           <[[String, any]]>   Conditions -> condiciones del select. (un array de arrays de 2 casillas)
       */
-  function select(fields, joins = [], conditions = []) {
+  select(fields, joins = [], conditions = []) {
     /* -------- CAMPOS ------- */
     let f = "";
 
@@ -41,7 +48,7 @@ module.exports = function(table) {
     @params: 
       <[[string, any]]> fields : array asociativo clave valor
   */
-  function insert(fields = []) {
+  insert(fields = []) {
     /* -------- VALORES ------- */
     /* Condition [0] -> key . Condition [1] -> value*/
     let solucion = `INSERT INTO ${table} SET `;
@@ -64,7 +71,7 @@ module.exports = function(table) {
       <[[string, any]]> fields : array asociativo clave valor
        <[[String, any]]>   conditions : condiciones del select. (un array de arrays de 2 casillas)
   */
-  function update(fields = [], conditions = []) {
+  update(fields = [], conditions = []) {
     let solucion = `UPDATE ${table} SET `;
     /* -------- CAMPOS ------- */
     fields.map((value, i) => {
@@ -86,19 +93,10 @@ module.exports = function(table) {
     @params
     <[[String, any]]>   Conditions -> condiciones del select. (un array de arrays de 2 casillas)
   */
-  function remove(conditions = []) {
+  remove(conditions = []) {
     return `DELETE FROM ${table} ${createConditions(conditions)}`;
   }
-
-  return {
-    showById: showById,
-    showAll: showAll,
-    insert: insert,
-    delete: remove,
-    update: update,
-    select: select
-  };
-};
+}
 
 /* FUERA DE LA CLASE UTILITY */
 
@@ -120,3 +118,6 @@ const createConditions = (conditions = []) => {
 
   return c;
 };
+
+module.exports = (table) => new utilityMySQL(table);
+

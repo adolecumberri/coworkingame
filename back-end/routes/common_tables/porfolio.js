@@ -7,7 +7,7 @@ const {
   insert,
   updateById,
   deleteById
-} = require("../../controllers/common_tables_controller/portofolio");
+} = require("../../controllers/common_tables_controller/porfolio");
 
 router.get("/", showAll);
 router.get("/:id", showById);

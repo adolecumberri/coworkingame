@@ -1,5 +1,26 @@
 import React from "react";
 
+/*-------------------------------------- Import de redux: ----------------------------*/
+import {connect} from "react-redux"; 
+  /* Acciones que voy a usar con la Store de Redux */
+import { SetAccountAction } from "../../redux/actions";
+  /* Interfaz de tipos de datos acumulados */
+import { IAccount } from "../../interface/IAccount";
+
+
+
+interface IProps{}
+
+interface IGlobalActionProps{
+  setAccount( account: IAccount ): void;
+}
+
+type TProps = IProps & IGlobalActionProps;
+
+
+
+
+
 class login extends React.PureComponent {
   render() {
     return (
@@ -14,7 +35,7 @@ class login extends React.PureComponent {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalCenterTitle">
-                Modal title
+                Login
               </h5>
               <button
                 type="button"
@@ -44,5 +65,9 @@ class login extends React.PureComponent {
     );
   }
 }
+
+const mapDispatchToProps: IGlobalActionProps = {
+  setAccount: SetAccountAction
+};
 
 export default login;

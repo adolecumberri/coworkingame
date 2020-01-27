@@ -32,7 +32,7 @@ CREATE TABLE `state` (
 CREATE TABLE `type`(
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `name` varchar(60) NOT NULL,
-  `cathegory` enum('file','proyect'),
+  `cathegory` enum('file','project'),
   `description` text NULL
 )ENGINE=InnoDB;
 
@@ -49,7 +49,7 @@ CREATE TABLE `user` (
   `password`  varchar(60) ,
   `name`  varchar(255) ,
   `age` int(3),
-  `gender` enum('hombre', 'mujer', 'otro'),
+  `gender` enum('Man', 'Woman', 'Other'),
   `id_country`  int NOT NULL ,
   `id_state`  int NOT NULL ,
   `id_social_media` int NOT NULL,
@@ -63,11 +63,11 @@ CREATE TABLE `user` (
   `colaboration_desired` tinyint(1) DEFAULT 0,
   `likes` int(11)  DEFAULT 0,
   `seen` int(11)  DEFAULT '0',
-  `develloper` tinyint(1) DEFAULT 0,
+  `developer` tinyint(1) DEFAULT 0,
+  `isAdmin` tinyint(1) DEFAULT 0 ,
   `avatar` text ,
-  `outstanding` tinyint(1) DEFAULT NULL,
+  `outstanding` tinyint(1) DEFAULT 0,
   `ip` text ,
-  `token` text ,
   `last_visit` date NOT NULL,
   `active` tinyint(1) DEFAULT 1,
   FOREIGN KEY(id_country) REFERENCES country(id),
@@ -135,7 +135,7 @@ CREATE TABLE `file` (
   `name` varchar(150),
   `id_project` int(11) DEFAULT NULL,
   `id_portfolio` int(11) DEFAULT NULL,
-  `likes` int(11) DEFAULT '0',
+  `claps` int(11) DEFAULT '0',
   `views` int(11) DEFAULT '0',
   `puntos` int(11) DEFAULT '0',
   `visible` tinyint(1) DEFAULT 1,
@@ -251,3 +251,73 @@ CREATE TABLE `enterprise_project` (
   FOREIGN KEY(id_project) REFERENCES project(id),
   PRIMARY KEY (id_enterprise, id_project)
 ) ENGINE=InnoDB;
+
+
+/*Tablas de  comprobación de los campos seen*/
+CREATE TABLE `seen_user_user` (
+  `id_user` int NOT NULL,
+  `id_whatched` int NOT NULL,
+  `seen_flag` varchar(15),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_whatched) REFERENCES user(id),
+  PRIMARY KEY (id_user, id_whatched)
+)ENGINE = InnoDB;
+
+CREATE TABLE `seen_user_enterprise` (
+  `id_user` int NOT NULL,
+  `id_enterprise` int NOT NULL,
+  `seen_flag` varchar(15),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_enterprise) REFERENCES enterprise(id),
+  PRIMARY KEY (id_user, id_enterprise)
+)ENGINE = InnoDB;
+
+CREATE TABLE `seen_user_project` (
+  `id_user` int NOT NULL,
+  `id_project` int NOT NULL,
+  `seen_flag` varchar(15),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_project) REFERENCES project(id),
+  PRIMARY KEY (id_user, id_project)
+)ENGINE = InnoDB;
+
+CREATE TABLE `seen_user_portfolio` (
+  `id_user` int NOT NULL,
+  `id_portfolio` int NOT NULL,
+  `seen_flag` varchar(15),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
+  PRIMARY KEY (id_user, id_portfolio)
+)ENGINE = InnoDB;
+
+/*likes*/
+CREATE TABLE `likes_user_portfolio` (
+  `id_user` int NOT NULL,
+  `id_portfolio` int NOT NULL,
+  `seen_flag` varchar(15),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
+  PRIMARY KEY (id_user, id_portfolio)
+)ENGINE = InnoDB;
+
+CREATE TABLE `likes_user_project` (
+  `id_user` int NOT NULL,
+  `id_project` int NOT NULL,
+  `seen_flag` varchar(15),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_project) REFERENCES project(id),
+  PRIMARY KEY (id_user, id_project)
+)ENGINE = InnoDB;
+
+
+
+/*claps*/
+
+CREATE TABLE `clap_user_files` (
+  `id_user` int NOT NULL,
+  `id_file` int NOT NULL,
+  `claps` int(11),
+  FOREIGN KEY (id_user) REFERENCES user(id),
+  FOREIGN KEY (id_file) REFERENCES file(id),
+  PRIMARY KEY (id_user, id_file)
+)ENGINE = InnoDB;

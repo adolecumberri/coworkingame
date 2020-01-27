@@ -49,7 +49,12 @@ SQL.insert = (table, fields = []) => {
   fields.map((value, i) => {
     //creación de conjuntos key = value
     let newVal = "";
-    if (typeof value[1] !== "number" && typeof value[1] !== "boolean") {
+    if (
+      typeof value[1] !== "number" &&
+      typeof value[1] !== "boolean" &&
+      value[1] !== "CURDATE()" &&
+      value[0] !== "password"
+    ) {
       newVal = `"${value[1]}"`;
     } else {
       newVal = value[1];

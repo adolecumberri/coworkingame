@@ -7,7 +7,7 @@ const {
   insert,
   updateById,
   deleteById
-} = require("../../controllers/nm_tables_controller/enterprise_profile");
+} = require("../../controllers/nm_tables_controller/enterprise_project");
 
 router.get("/", showAll);
 router.get("/:id", showById);

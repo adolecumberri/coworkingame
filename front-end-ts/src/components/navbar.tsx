@@ -1,36 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import Login from "./user/login";
+import Register from "./user/register";
 interface IProps{
 
 }
-interface IState{
-  loginOpen : boolean;
-  registerOpen : boolean;
-}
-class Navbar extends React.PureComponent <IProps, IState>{
 
+
+class Navbar extends React.PureComponent <IProps>{
   constructor(props: IProps){
     super(props);
-    this.state = {
-      loginOpen : false,
-      registerOpen : false
-    }
-
-
-    this.showLogin = this.showLogin.bind(this);
-    this.showRegister = this.showRegister.bind(this);
-    
   }
-
-  showRegister(){
-
-  }
-
-  showLogin(){
-
-  }
-
 
   render() {
 
@@ -42,7 +22,7 @@ class Navbar extends React.PureComponent <IProps, IState>{
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
               <a className="navbar-brand" href="/">
                 <img
-                  src="ico_logo.png"
+                  src="images/ico_logo40x40.png"
                   width="30"
                   height="30"
                   alt=""
@@ -95,8 +75,7 @@ class Navbar extends React.PureComponent <IProps, IState>{
                   <li>
                     <button
                       type="button"
-                      onClick = { this.showLogin }
-                      className="btn btn-primary"
+                      className="btn btn-primary mr-3"
                       data-toggle="modal"
                       data-target="#login-modal"
                     >
@@ -106,7 +85,6 @@ class Navbar extends React.PureComponent <IProps, IState>{
                   <li>
                     <button
                       type="button"
-                      onClick = { this.showRegister }
                       className="btn btn-primary"
                       data-toggle="modal"
                       data-target="#register-modal"
@@ -120,6 +98,8 @@ class Navbar extends React.PureComponent <IProps, IState>{
           </div>
         </div>
       </div>
+{ <Login />}
+{ <Register />}
 
      </>
     );

@@ -8,7 +8,6 @@ const {
   updateById,
   deleteById
 } = require("../../controllers/common_tables_controller/enterprise");
-
 router.get("/", showAll);
 router.get("/:id", showById);
 router.post("/", insert);
@@ -16,3 +15,4 @@ router.put("/:id", updateById);
 router.delete("/:id", deleteById);
 
 module.exports = router;
+

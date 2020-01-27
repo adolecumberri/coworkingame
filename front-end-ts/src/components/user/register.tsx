@@ -1,8 +1,11 @@
 import React from "react";
 import { myFetch } from "../../utils";
+import Swal from "sweetalert2";
 
 /* ----------------------------Propiedades Del Componente + de la Store------------------------------- */
-interface IProps {}
+interface IProps {
+  registered: any
+}
 
 interface IState {
   email: string;
@@ -39,7 +42,8 @@ class register extends React.PureComponent<IProps, IState> {
     );
 
     /* eventos de confirmación del formulario */
-    this.checkPasswords = this.checkPasswords.bind(this);
+    this.checkForm = this.checkForm.bind(this);
+    this.ejecutarFetch = this.ejecutarFetch.bind(this);
   }
   onNameChange(event: any) {
     const name = event.target.value;
@@ -49,7 +53,6 @@ class register extends React.PureComponent<IProps, IState> {
     const password = e.target.value;
     this.setState({ password, error_pssw: "" });
   }
-
   onEmailChange(e: any) {
     const email = e.target.value;
     this.setState({ email, error_email: "" });
@@ -61,41 +64,53 @@ class register extends React.PureComponent<IProps, IState> {
     this.setState({ password_validation, error_pssw: "" });
   }
 
-  register() {
-    console.log(this.state);
+  async register() {
+    try {
+      this.checkForm();
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+    }
+  }
+
+  checkForm() {
+    const { password, password_validation } = this.state;
+    /* Password validation  */
+    if (password !== password_validation) {
+      this.setState({ error_pssw: "Passwords dont match" });
+    } else {
+      this.ejecutarFetch();
+    }
+  }
+
+  ejecutarFetch() {
     const {
-      email,
+      error_pssw,
+      error_email,
+      error_name,
       name,
       password,
-      password_validation,
-      error_pssw,
-      error_name,
-      error_email
+      email
     } = this.state;
-    this.checkPasswords(); // le da valor a error_pssw si hay algún error
-    /*
-    this.checkEmail();
-    this.checkName();
-    */
-    /* Si los 3 errores estan a "", puedo ejecutar el fetch. */
-    if (error_pssw == "" && error_email == "" && error_name == "") {
+    if (error_pssw === "" && error_email === "" && error_name === "") {
       myFetch({
         path: "/user",
         method: "POST",
         obj: { name, password: `sha1('${password}')`, email }
-      }).then(resp => {
-        console.log(resp);
-        if (resp.code == "ER_DUP_ENTTRY") {
+      }).then(res => {
+        //si resp es null, falla el insert porque el name ya existe
+        if (res == null) {
           this.setState({ error_name: "User already registered " });
+        } else {
+          Swal.fire({
+            icon: "success",
+            title: "Usuario Registrado!",
+            focusConfirm: false,
+            confirmButtonText: "Great!"
+          });
+          this.props.registered();
         }
       });
-    }
-  }
-
-  checkPasswords() {
-    const { password, password_validation } = this.state;
-    if (password !== password_validation) {
-      this.setState({ error_pssw: "Passwords dont match" });
     }
   }
   /* Ni puta idea de validar o mneter RegExp */
@@ -129,13 +144,11 @@ class register extends React.PureComponent<IProps, IState> {
       error_name
     } = this.state;
     return (
-      <div
-        className="modal fade"
-        id="register-modal"
-        role="dialog"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="container background-register animated fadeIn slow">
+        <div
+          className="modal-dialog modal-dialog-centered animated  bounceInLeft"
+          role="document"
+        >
           <div className="modal-content container">
             <div className="row"></div>
             <div className="modal-header mt-3 mb-3">

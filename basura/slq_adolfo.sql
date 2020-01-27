@@ -1,3 +1,5 @@
+
+drop database coworkin_coworkingame;
 create database coworkin_coworkingame;
 use coworkin_coworkingame;
 
@@ -45,15 +47,15 @@ CREATE TABLE `social_media`(
 /* -----------------------------------------------TABLES ---------------------------------------   */
 CREATE TABLE `user` (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `email` varchar(60) ,
+  `email` varchar(60) UNIQUE,
   `password`  varchar(60) ,
-  `name`  varchar(255) ,
+  `name`  varchar(255) UNIQUE,
   `age` int(3),
   `gender` enum('Man', 'Woman', 'Other'),
-  `id_country`  int NOT NULL ,
-  `id_state`  int NOT NULL ,
-  `id_social_media` int NOT NULL,
-  `header`  text ,
+  `id_country`  int NULL ,
+  `id_state`  int NULL ,
+  `id_social_media` int NULL,
+  `header`  varchar(255) default 'ico_logo.png' ,
   `features`  varchar(60) ,
   `cv_photo` text ,
   `cv_studies` text ,

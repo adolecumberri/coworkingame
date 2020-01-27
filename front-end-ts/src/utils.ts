@@ -32,6 +32,6 @@ export const myFetch = async ({
 };
 
 export const generateAccountFromToken = (token: string): IAccount => {
-  const { id, name, isAdmin, header } = decode(token) as ITokenPayload;
-  return { token, id, name, isAdmin, header };
+  const { id, name, header, isAdmin } = decode(token) as ITokenPayload;
+  return { token, id, name, header, isAdmin };
 };

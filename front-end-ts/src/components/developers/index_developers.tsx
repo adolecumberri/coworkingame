@@ -3,7 +3,7 @@ import React from "react";
 class developers extends React.PureComponent {
   render() {
     return (
-        <div>Pagina developers.</div>
+        <div style={{backgroundColor: "antiquewhite", width:"100vw", height: "92vh"}}>Pagina developers.</div>
     );
   }
 }

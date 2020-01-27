@@ -105,7 +105,12 @@ const createConditions = (conditions = []) => {
   /* Condition [0] -> key . Condition [1] -> value*/
   conditions.map((condition, i) => {
     let value = "";
-    if (typeof condition[1] !== "number" && typeof condition[1] !== "boolean") {
+    if (
+      typeof condition[1] !== "number" &&
+      typeof condition[1] !== "boolean" &&
+      condition[1] !== "CURDATE()" &&
+      condition[0] !== "password"
+    ) {
       value = `"${condition[1]}"`;
     } else {
       value = condition[1];

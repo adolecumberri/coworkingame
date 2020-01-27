@@ -1,7 +1,7 @@
 /* Interfaz del token */
 
-import  { ITokenPayload } from "./ITokenPayLoad";
+import { ITokenPayload } from "./ITokenPayload";
 
-export interface IAccount extends ITokenPayload{
-    token:string;
+export interface IAccount extends ITokenPayload {
+  token: string;
 }

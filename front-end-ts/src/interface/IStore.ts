@@ -1,7 +1,8 @@
-import {ILoginUser} from "./IUser";
+
+import { IAccount } from "./IAccount";
 
 
 export interface IStore {
-    loginData : ILoginUser 
+    account: IAccount | null
   }
   

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { SetAccountAction } from "../../redux/actions";
 /* Interfaz de tipos de datos acumulados */
 import { IAccount } from "../../interface/IAccount";
-import { myFetch, generateAccountFromToken } from "src/utils";
+import { myFetch, generateAccountFromToken, myLocalStorage } from "src/utils";
 
 interface IProps {}
 
@@ -58,11 +58,8 @@ class login extends React.PureComponent <TProps, IState> {
     }).then(token => {
         console.log(token);
         if(token){
-          sessionStorage.setItem("coworkin_token", token);
-          console.log("account: ");
+          myLocalStorage( "coworkin_token", token );        
           const  account = generateAccountFromToken(token);
-          console.log( account );
-
           setAccount(account);
         }else{
           this.setState({error: "Credenciales inválidas "});
@@ -74,7 +71,7 @@ class login extends React.PureComponent <TProps, IState> {
 
   render() {
 
-    const {email, password, error} = this.state;
+    const {email, password} = this.state;
 
     return (
       <div className="container background-login animated fadeIn slower">
@@ -86,7 +83,7 @@ class login extends React.PureComponent <TProps, IState> {
                 className="modal-title text-center"
                 id="exampleModalCenterTitle"
               >
-                <img src="images/ico_logo100x75.png" />
+                <img src="images/ico_logo100x75.png" alt="Coworkingame" />
                 <br />
                 Registro CoworkinGame
               </h5>

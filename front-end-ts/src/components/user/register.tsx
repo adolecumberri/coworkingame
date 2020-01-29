@@ -144,7 +144,7 @@ class register extends React.PureComponent<IProps, IState> {
       error_name
     } = this.state;
     return (
-      <div className="container background-register animated fadeIn slow">
+      <div className="container background-register animated fadeIn">
         <div
           className="modal-dialog modal-dialog-centered animated  bounceInLeft"
           role="document"
@@ -156,7 +156,7 @@ class register extends React.PureComponent<IProps, IState> {
                 className="modal-title text-center"
                 id="exampleModalCenterTitle"
               >
-                <img src="images/ico_logo100x75.png" />
+                <img src="images/ico_logo100x75.png" alt="Coworkingames" />
                 <br />
                 Registro CoworkinGame
               </h5>

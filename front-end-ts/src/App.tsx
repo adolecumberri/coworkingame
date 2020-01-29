@@ -1,21 +1,32 @@
 import React from "react";
 import "./assets/App.css";
 import { generateAccountFromToken } from "./utils";
-import { BrowserRouter, Switch, Route, Redirect, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route} from "react-router-dom";
 
 /* IMPORT DE COMPONENTES  */
-import NavbarUnlogged from "./components/navbarUnlogged";
+/* Redux interfaces/actions */
+import { connect } from "react-redux";
+import { SetAccountAction } from "./redux/actions";
+import { IStore } from "./interface/IStore";
+import { IAccount } from "./interface/IAccount";
+
+/* Main Pages */
 import main from "./components/main/index_main";
 import explore from "./components/explore/index_explore";
 import developers from "./components/developers/index_developers";
 import enterprises from "./components/enterprise/index_enterprise";
 import contact_us from "./components/contact_us/index_contact_us";
-import { IAccount } from "./interface/IAccount";
-import NavbarLogged from "./components/navbarLogged";
-import { SetAccountAction } from "./redux/actions";
-import { IStore } from "./interface/IStore";
-import { connect } from "react-redux";
 
+/* Navbars */
+import NavbarLogged from "./components/navbarLogged";
+import NavbarUnlogged from "./components/navbarUnlogged";
+import NavbarAdmin from "./components/admin/navbarAdmin";
+
+/*  User Section */
+import Profile from "./components/user/profile";
+
+/* Admin Stuff */
+import UserAdmin from "./components/admin/userAdmin";
 
 interface IGlobalStateProps {
   account: IAccount | null;
@@ -28,30 +39,37 @@ interface IGlobalActionProps {
 type TProps = IGlobalStateProps & IGlobalActionProps;
 
 class App extends React.PureComponent<TProps> {
-
-  componentWillMount() {
+  componentDidMount() {
     const { setAccount } = this.props;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("coworkin_token");
     if (token) {
-      setAccount(generateAccountFromToken(token));
+      const { value } = JSON.parse(token); //el token tiene value Y expiry.
+      setAccount(generateAccountFromToken(value));
     }
   }
 
   render() {
-    const {account} = this.props;
-    
+    const { account } = this.props;
+    const isAdmin = account?.isAdmin;
+    console.log("Account");
+    console.log(account);
     return (
       <div className="app">
         <BrowserRouter>
           {!account && <NavbarUnlogged />}
-          {account && <NavbarLogged /> }
+          {account && <NavbarLogged />}
+          {isAdmin? <NavbarAdmin /> : ""}
           <Switch>
             <Route path="/" exact component={main} />
+            <Route path="/main" exact component={main} />
             <Route path="/contact_us" exact component={contact_us} />
             <Route path="/developers" exact component={developers} />
             <Route path="/enterprises" exact component={enterprises} />
             <Route path="/explore" exact component={explore} />
+            <Route path="/admin/user" component={UserAdmin}/>
+             <Route path="/user/profile" component={Profile}/>
           </Switch>
+          
         </BrowserRouter>
       </div>
     );

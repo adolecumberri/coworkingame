@@ -4,12 +4,15 @@
 
 
 /* TODO: terminar*/
-export interface IRegisterUser{
+export interface IAdminUser{
+    id: number,
     name: string,
     email: string,
-    password: string,
+    active: boolean,
+    isAdmin: boolean
 
 }
+
 
 export interface IUser {
     email: string,

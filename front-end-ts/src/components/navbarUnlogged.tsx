@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Login from "./user/login";
 import Register from "./user/register";
+import { LOCAL_URL } from "src/constants";
 interface IProps {}
 
 interface IState {
@@ -39,15 +40,15 @@ class Navbar extends React.PureComponent<IProps, IState> {
     const { loginFlag, registerFlag } = this.state;
     return (
       <>
-        <div className="container-fluid">
+        <div className="container-fluid" style = {{margin: "0px"}}>
           <div className="row">
             <div className="col-12">
               <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <a className="navbar-brand" href="/">
                   <img
-                    src="images/ico_logo40x40.png"
-                    width="30"
-                    height="30"
+                    src={LOCAL_URL+"/images/ico_logo40x40.png"}
+                    width="40px"
+                    height="40px"
                     alt=""
                   />
                 </a>
@@ -69,7 +70,7 @@ class Navbar extends React.PureComponent<IProps, IState> {
                 >
                   <ul className="navbar-nav mr-auto mx-auto">
                     <li className="nav-item active">
-                      <Link to="/" className="nav-link" onClick={this.navbarClicked}>
+                      <Link to="/main" className="nav-link" onClick={this.navbarClicked}>
                         MAIN
                       </Link>
                     </li>
@@ -100,7 +101,6 @@ class Navbar extends React.PureComponent<IProps, IState> {
                         type="button"
                         className="btn btn-primary mr-3"
                         data-toggle="modal"
-                        data-target="#login_modal"
                         onClick = {this.loginActivation}
                       >
                         Login
@@ -111,7 +111,6 @@ class Navbar extends React.PureComponent<IProps, IState> {
                         type="button"
                         className="btn btn-primary"
                         data-toggle="modal"
-                        data-target="#register_modal"
                         onClick = {this.registerActivation}
                       >
                         Register

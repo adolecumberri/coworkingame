@@ -53,10 +53,12 @@ controller.insert = ({ body }, res) => {
 
 /*No*/
 controller.updateById = ({ params: { id }, body }, res) => {
+  console.log(bbdd.update("user", objToArray(body), [["id", id]])),
   connection.query(
     bbdd.update("user", objToArray(body), [["id", id]]),
     (e, result) => {
       if (e) throw e;
+      console.log(result);
       res.send(result);
     }
   );
@@ -71,8 +73,8 @@ controller.deleteById = ({ params: { id }, res }) => {
 };
 
 controller.login = ({ body }, res) => {
-  
-  connection.query(bbdd.select("user", "", [], objToArray(body)),
+  connection.query(
+    bbdd.select("user", "", [], objToArray(body)),
     (err, result) => {
       if (err) res.sendStatus(400);
       const token = createUserToken({
@@ -81,12 +83,27 @@ controller.login = ({ body }, res) => {
         header: result[0].header,
         isAdmin: result[0].isAdmin
       });
-      
+
       console.log("el result: ");
       console.log(token);
       res.json(token); //POR QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!
     }
   );
 };
+
+controller.getLessData = (req, res) => {
+  connection.query(
+    bbdd.select("user", ["id", "name", "email", "active", "isAdmin"]),
+    (err, result) => {
+      if (err) res.sendStatus(400);
+     
+      res.send(result); //POR QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!
+    }
+  );
+};
+
+controller.confirmUser = (req,res) => {
+
+}
 
 module.exports = controller;

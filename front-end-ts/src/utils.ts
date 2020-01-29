@@ -1,7 +1,7 @@
 import { API_URL } from "./constants";
 import { IAccount } from "./interface/IAccount";
 import { decode } from "jsonwebtoken";
-import { ITokenPayload } from "./interface/ITokenPayLoad";
+import { ITokenPayload } from "./interface/ITokenPayload";
 
 /* Tipado de entrada de atributos*/
 export const myFetch = async ({
@@ -11,7 +11,7 @@ export const myFetch = async ({
   token
 }: {
   path: string;
-  method?: "GET" | "POST";
+  method?: "GET" | "POST" | "PUT" | "DELETE";
   obj?: Object;
   token?: string;
 }) => {
@@ -29,6 +29,17 @@ export const myFetch = async ({
   } catch {
     return null;
   }
+};
+
+export const myLocalStorage = (key: string, value: string) => {
+  const now = new Date();
+
+  const item = {
+    value: value,
+    expiry: now.getTime() + 86400000
+  };
+
+  localStorage.setItem(key, JSON.stringify(item));
 };
 
 export const generateAccountFromToken = (token: string): IAccount => {

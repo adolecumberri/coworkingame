@@ -38,6 +38,10 @@ let user_enterprise = require("./routes/nm_tables/user_enterprise");
 let user_project = require("./routes/nm_tables/user_project");
 let enterprise_social_media = require("./routes/nm_tables/enterprise_social_media");
 let enterprise_project = require("./routes/nm_tables/enterprise_project");
+ 
+/* Router de utilidades  */
+let admin = require("./routes/admin/admin_user_router");
+
 
 /* -------------------------------------USO DE ROUTERS ------------------------*/
 /*--> Tablas Maestras */
@@ -66,6 +70,8 @@ app.use("/user_project", user_project);
 app.use("/enterprise_social_media", enterprise_social_media);
 app.use("/enterprise_project", enterprise_project);
 
+/* --> Acciones especificas de la pagina como ADMIN */
+app.use("/admin", admin);
 /* DEFAULT PAGE */
 
 app.get("/", (req, res) => {

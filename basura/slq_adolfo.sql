@@ -13,21 +13,9 @@ SET time_zone = "+00:00";
 /* ---------------------------------------------------------------------------------------------   */
 /*-------------------------------------------------TABLA MAESTRA---------------------------------------------*/
 
-CREATE TABLE `country` (
-  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `name` varchar(60)  NOT NULL
-) ENGINE=InnoDB default character set utf8mb4;
-
-CREATE TABLE `state` (
-  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `id_country` int DEFAULT NULL,
-  `name` varchar(255)  NOT NULL,
-   FOREIGN KEY(id_country) REFERENCES country(id)
-) ENGINE=InnoDB default character set utf8mb4;
-
  CREATE TABLE `profile` (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `name` varchar(60) NOT NULL,
+  `name` varchar(60)  NOT NULL UNIQUE,
   `cathegory` varchar (60) NOT NULL
 ) ENGINE=InnoDB default character set utf8mb4;
 
@@ -52,8 +40,8 @@ CREATE TABLE `user` (
   `name`  varchar(255) UNIQUE,
   `age` int(3),
   `gender` enum('Man', 'Woman', 'Other'),
-  `id_country`  int NULL ,
-  `id_state`  int NULL ,
+  `country`   varchar(2),
+  `state`   varchar(30),
   `id_social_media` int NULL,
   `header`  varchar(255) default 'ico_logo.png' ,
   `features`  varchar(60) ,
@@ -71,9 +59,7 @@ CREATE TABLE `user` (
   `outstanding` tinyint(1) DEFAULT 0,
   `ip` text ,
   `last_visit` date NOT NULL,
-  `active` tinyint(1) DEFAULT 1,
-  FOREIGN KEY(id_country) REFERENCES country(id),
-  FOREIGN KEY(id_state) REFERENCES state(id)
+  `active` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB default character set utf8mb4;
 
 CREATE TABLE `enterprise` (
@@ -82,16 +68,14 @@ CREATE TABLE `enterprise` (
   `name` varchar(60),
   `url_friendly` varchar(255),
   `description` text ,
-  `id_country`  int NOT NULL ,
-  `id_state`  int NOT NULL ,
+  `country`   varchar(2),
+  `state`   varchar(30),
   `logo` text ,
   `header` text ,
   `seen` int(11) DEFAULT NULL,
   `date`  date NOT NULL,
   `visible` tinyint(1) DEFAULT 1,
-  `active` tinyint(1) DEFAULT 1,
-  FOREIGN KEY(id_country) REFERENCES country(id),
-  FOREIGN KEY(id_state) REFERENCES state(id)
+  `active` tinyint(1) DEFAULT 1
   ) ENGINE=InnoDB default character set utf8mb4;
 
 /* TODO: preguntar davis diferencia entr proyect y portafolio. */

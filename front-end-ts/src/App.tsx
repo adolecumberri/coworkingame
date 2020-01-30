@@ -20,7 +20,6 @@ import contact_us from "./components/contact_us/index_contact_us";
 /* Navbars */
 import NavbarLogged from "./components/navbarLogged";
 import NavbarUnlogged from "./components/navbarUnlogged";
-import NavbarAdmin from "./components/admin/navbarAdmin";
 
 /*  User Section */
 import Profile from "./components/user/profile";
@@ -58,7 +57,6 @@ class App extends React.PureComponent<TProps> {
         <BrowserRouter>
           {!account && <NavbarUnlogged />}
           {account && <NavbarLogged />}
-          {isAdmin? <NavbarAdmin /> : ""}
           <Switch>
             <Route path="/" exact component={main} />
             <Route path="/main" exact component={main} />
@@ -68,6 +66,7 @@ class App extends React.PureComponent<TProps> {
             <Route path="/explore" exact component={explore} />
             <Route path="/admin/user" component={UserAdmin}/>
              <Route path="/user/profile" component={Profile}/>
+            
           </Switch>
           
         </BrowserRouter>

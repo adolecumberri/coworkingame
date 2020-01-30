@@ -32,7 +32,7 @@ class Navbar extends React.PureComponent<IProps, IState> {
     const {registerFlag} = this.state;
     this.setState( { registerFlag : !registerFlag, loginFlag: false});
   }
-  navbarClicked(){
+    navbarClicked(){
     this.setState({loginFlag: false, registerFlag: false});
   }
 
@@ -84,7 +84,7 @@ class Navbar extends React.PureComponent<IProps, IState> {
                         DEVELOPERS
                       </Link>
                     </li>
-                    <li className="nav-item active">
+                    {/* <li className="nav-item active">
                       <Link to="/enterprises" className="nav-link" onClick={this.navbarClicked}>
                         ENTERPRISES
                       </Link>
@@ -93,7 +93,7 @@ class Navbar extends React.PureComponent<IProps, IState> {
                       <Link to="/contact_us" className="nav-link" onClick={this.navbarClicked}>
                         CONTACT US
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                   <ul className="navbar-nav ">
                     <li>

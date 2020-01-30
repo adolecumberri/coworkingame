@@ -3,19 +3,33 @@ import { Link } from "react-router-dom";
 import Registered from "../components/user/registered";
 import { LOCAL_URL } from "src/constants";
 
-class NavbarLogged extends React.PureComponent {
+import { connect } from "react-redux";
+import { IStore } from "src/interface/IStore";
+import { IAccount } from "src/interface/IAccount";
+import AdminButtons from "./admin/adminButtons";
 
+interface IGlobalStateProps {
+  account: IAccount | null;
+}
+
+interface IGlobalActionProps {}
+
+type TProps = IGlobalStateProps & IGlobalActionProps;
+
+class NavbarLogged extends React.PureComponent<TProps> {
   render() {
+    const { account } = this.props;
+    const isAdmin = account?.isAdmin;
 
     return (
       <>
         <div className="container-fluid" style={{ margin: "0px" }}>
-          <div className="row ">
+
             <div className="col-12" style={{ margin: "0px", padding: "0px" }}>
-              <nav className="navbar navbar-expand-lg navbar-light bg-light ">
+              <nav className="navbar navbar-expand navbar-light bg-light ">
                 <a className="navbar-brand" href="/">
                   <img
-                    src={LOCAL_URL+"/images/ico_logo40x40.png"}
+                    src={LOCAL_URL + "/images/ico_logo40x40.png"}
                     width="40px"
                     height="40px"
                     alt=""
@@ -25,9 +39,7 @@ class NavbarLogged extends React.PureComponent {
                   className="navbar-toggler"
                   type="button"
                   data-toggle="collapse"
-                  data-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
+                  data-target="#main_navbar"
                   aria-label="Toggle navigation"
                 >
                   <span className="navbar-toggler-icon"></span>
@@ -35,7 +47,7 @@ class NavbarLogged extends React.PureComponent {
 
                 <div
                   className="collapse navbar-collapse"
-                  id="navbarSupportedContent"
+                  id="main_navbar"
                 >
                   <ul className="navbar-nav mr-auto mx-auto">
                     <li className="nav-item active">
@@ -53,7 +65,7 @@ class NavbarLogged extends React.PureComponent {
                         DEVELOPERS
                       </Link>
                     </li>
-                    <li className="nav-item active">
+                    {/* <li className="nav-item active">
                       <Link to="/enterprises" className="nav-link">
                         ENTERPRISES
                       </Link>
@@ -62,17 +74,28 @@ class NavbarLogged extends React.PureComponent {
                       <Link to="/contact_us" className="nav-link">
                         CONTACT US
                       </Link>
-                    </li>
+                    </li> */}
+                    {isAdmin ? (
+                      <li className="nav-item active mt-n2">
+                        <AdminButtons />
+                      </li>
+                    ) : (
+                      ""
+                    )}
                   </ul>
-                  <Registered/>
+                  <Registered />
                 </div>
               </nav>
             </div>
           </div>
-        </div>
+      
       </>
     );
   }
 }
 
-export default NavbarLogged;
+const mapStateToProps = ({ account }: IStore): IGlobalStateProps => ({
+  account
+});
+
+export default connect(mapStateToProps)(NavbarLogged);

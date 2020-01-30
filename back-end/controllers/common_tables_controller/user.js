@@ -51,13 +51,13 @@ controller.insert = ({ body }, res) => {
   });
 };
 
-/*No*/
+
 controller.updateById = ({ params: { id }, body }, res) => {
   console.log(bbdd.update("user", objToArray(body), [["id", id]])),
   connection.query(
     bbdd.update("user", objToArray(body), [["id", id]]),
     (e, result) => {
-      if (e) throw e;
+      if (e) res.sendStatus(401);
       console.log(result);
       res.send(result);
     }

@@ -76,7 +76,7 @@ SQL.update = (table, fields = [], conditions = []) => {
   fields.map((value, i) => {
     //creación de conjuntos key = value
     let newVal = "";
-    if (typeof value[1] !== "number" && typeof value[1] !== "boolean") {
+    if (typeof value[1] !== "number" && typeof value[1] !== "boolean" && value[0] !== "age")  {
       newVal = `"${value[1]}"`;
     } else {
       newVal = value[1];

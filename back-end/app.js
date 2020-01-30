@@ -14,8 +14,6 @@ app.use(express.static(__dirname + "/public"));
 /*
 const master_router = require("./routes/master_tables/router_master_tables");
  TODO: ELIMINAR si el router master table funciona*/
-let country = require("./routes/master_tables/country");
-let state = require("./routes/master_tables/state");
 let profile = require("./routes/master_tables/profile");
 let type = require("./routes/master_tables/type");
 let social_media = require("./routes/master_tables/social_media");
@@ -45,8 +43,6 @@ let admin = require("./routes/admin/admin_user_router");
 
 /* -------------------------------------USO DE ROUTERS ------------------------*/
 /*--> Tablas Maestras */
-app.use("/country", country);
-app.use("/state", state);
 app.use("/profile", profile);
 app.use("/type", type);
 app.use("/social_media", social_media);

@@ -3,8 +3,10 @@ import { LOCAL_URL } from "src/constants";
 
 class HeaderAvatar extends React.PureComponent {
   render() {
+    //var activeRouteName = currentRoutes[currentRoutes.length - 1].name;
+   // console.log(activeRouteName);
     return (
-      <div className="container" style={{ border: "1px solid black" }}>
+      <div className="container">
         <div className="card text-center  mt-4">
           <div className="card-header">
             <h5 className="col-12 mt-1">Header and Avatar of the portfolio </h5>
@@ -27,7 +29,7 @@ class HeaderAvatar extends React.PureComponent {
                     }}
                   />
                   <label
-                    className="custom-file-label pl-n5"
+                    className="custom-file-label pl-n5 pr-5"
                     htmlFor="fileAvatar"
                   >
                     Choose Avatar
@@ -54,14 +56,14 @@ class HeaderAvatar extends React.PureComponent {
                   <input
                     type="file"
                     className="custom-file-input"
-                    id="fileAvatar"
+                    id="fileHeader"
                     accept=".png, .jpg, .jpeg"
                   />
                   <label
                     className="custom-file-label pl-n5"
-                    htmlFor="fileAvatar"
+                    htmlFor="fileHeader"
                   >
-                    Choose Avatar
+                    Choose Header
                   </label>
                   <div className="invalid-feedback">
                     Example invalid custom file feedback

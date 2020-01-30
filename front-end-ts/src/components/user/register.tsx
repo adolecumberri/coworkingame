@@ -144,10 +144,10 @@ class register extends React.PureComponent<IProps, IState> {
       error_name
     } = this.state;
     return (
-      <div className="container background-register animated fadeIn">
+      <div className="container background-register animated fadeIn "  style={{ position: "absolute", minWidth:"100vw" }}>
         <div
           className="modal-dialog modal-dialog-centered animated  bounceInLeft"
-          role="document"
+         
         >
           <div className="modal-content container">
             <div className="row"></div>

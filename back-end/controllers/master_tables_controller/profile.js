@@ -19,7 +19,7 @@ controller.showById = ({ params: { id } }, res) => {
 
 controller.insert = ({ body }, res) => {
   connection.query(bbdd.insert("profile",objToArray(body)), (err, result) => {
-    if (err) throw err;
+    if (err) res.sendStatus(400);
     res.send(result);
   });
 };

@@ -44,6 +44,7 @@ CREATE TABLE `user` (
   `state`   varchar(30),
   `id_social_media` int NULL,
   `header`  varchar(255) default 'ico_logo.png' ,
+  `avatar` varchar(255) default 'ico_logo.png' ,
   `features`  varchar(60) ,
   `cv_photo` text ,
   `cv_studies` text ,
@@ -55,7 +56,6 @@ CREATE TABLE `user` (
   `seen` int(11)  DEFAULT '0',
   `developer` tinyint(1) DEFAULT 0,
   `isAdmin` tinyint(1) DEFAULT 0 ,
-  `avatar` text ,
   `outstanding` tinyint(1) DEFAULT 0,
   `ip` text ,
   `last_visit` date NOT NULL,
@@ -280,7 +280,7 @@ CREATE TABLE `seen_user_portfolio` (
 CREATE TABLE `likes_user_portfolio` (
   `id_user` int NOT NULL,
   `id_portfolio` int NOT NULL,
-  `seen_flag` varchar(15),
+  `like` tinyint(1) DEFAULT 0,
   FOREIGN KEY (id_user) REFERENCES user(id),
   FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
   PRIMARY KEY (id_user, id_portfolio)
@@ -289,7 +289,7 @@ CREATE TABLE `likes_user_portfolio` (
 CREATE TABLE `likes_user_project` (
   `id_user` int NOT NULL,
   `id_project` int NOT NULL,
-  `seen_flag` varchar(15),
+  `like` tinyint(1) DEFAULT 0,
   FOREIGN KEY (id_user) REFERENCES user(id),
   FOREIGN KEY (id_project) REFERENCES project(id),
   PRIMARY KEY (id_user, id_project)

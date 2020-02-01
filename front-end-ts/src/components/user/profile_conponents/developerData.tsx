@@ -1,35 +1,44 @@
 import React from "react";
-import countries from "../../../jsons/cities.json";
-import { IStore } from "../../../interface/IStore";
 import { myFetch } from "../../../utils";
-import { API_URL } from "../../../constants";
 import { connect } from "react-redux";
-import { IAccount } from "../../../interface/IAccount.js";
 
+import { IDevInformation } from "../../../interface/IUser";
+import { IAccount } from "../../../interface/IAccount.js";
+import { IStore } from "../../../interface/IStore";
 interface IGlobalStateProps {
   account: IAccount | null;
 }
 
-interface IGlobalActionProps {
-  logout(): void;
+interface IProps {
+  countries: {
+    name: string;
+    code: string;
+  }[];
 }
 
 interface IState {
-  day: string;
-  month: string;
-  year: string;
   error_name: boolean;
+  user: IDevInformation;
 }
 
-type TProps = IGlobalStateProps & IGlobalActionProps;
+type TProps = IGlobalStateProps & IProps;
 
 class DeveloperData extends React.PureComponent<TProps, IState> {
   constructor(props: TProps) {
     super(props);
     this.state = {
-      day: "",
-      month: "",
-      year: "",
+      user: {
+        name: "",
+        gender: "",
+        age: {
+          day: "",
+          month: "",
+          year: ""
+        },
+        country: "",
+        state: ""
+      },
+
       error_name: false
     };
 
@@ -47,12 +56,13 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     let {
       target: { value }
     } = e;
-
+    let newUser = this.state.user;
     if (parseInt(value) <= 31 || !parseInt(value)) {
-      this.setState({ day: value });
+      newUser.age.day = value;
+      this.setState({ user: { ...newUser } });
     }
 
-    if (value.length == "2") {
+    if (value.length === "2") {
       document.getElementById("month-input")?.focus();
     }
     /* Esto puede fallar porque aunque no se actualice el estado,
@@ -63,12 +73,13 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     let {
       target: { value }
     } = e;
-
+    let newUser = this.state.user;
     if (parseInt(value) <= 12 || !parseInt(value)) {
-      this.setState({ month: value });
+      newUser.age.month = value;
+      this.setState({ user: { ...newUser } });
     }
 
-    if (value.length == "2") {
+    if (value.length === "2") {
       document.getElementById("year-input")?.focus();
     }
   }
@@ -77,30 +88,28 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     let {
       target: { value }
     } = e;
-    if (e.type === "blur") {
-      console.log(e.type);
-    } else {
-    }
+    let newUser = { ...this.state.user };
+
     if (parseInt(value) <= new Date().getFullYear() || !parseInt(value)) {
-      if (
-        (value.length == "4" && parseInt(value) <= 1950) &&
-        e.type === "blur"
-      ) {
-        this.setState({ year: "1970" });
+      if (value.length === "4" && parseInt(value) <= 1950 && e.type === "blur") {
+        newUser.age.year = "1970";
+        this.setState({ user: { ...newUser } });
       } else {
-        this.setState({ year: value });
+        newUser.age.year = value;
+        this.setState({ user: { ...newUser } });
       }
     } else {
-      this.setState({ year: "" + new Date().getFullYear() });
+      newUser.age.year = "" + new Date().getFullYear();
+      this.setState({ user: { ...newUser } });
     }
-    if (value.length == "4") {
+    if (value.length === "4") {
       document.getElementById("country")?.focus();
     }
   }
 
   selectEvent(e: any) {
     let select = e.target;
-    console.log(select);
+
     if (e.type === "mousedown") {
       select.size = 8;
     } else {
@@ -109,6 +118,11 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
       } else {
         select.size = 0;
       }
+    }
+    if (select.selectedOptions) {
+      let newUser = this.state.user;
+      newUser.country = select.selectedOptions[0].value;
+      this.setState({ user: {...newUser} });
     }
   }
 
@@ -129,30 +143,24 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
         obj: obj
       }).then(res => {
         //si resp es null, falla el insert porque el name ya existe
-        if (!res && name == "name") {
+        if (!res && name === "name") {
           this.setState({ error_name: true });
         } else {
           this.setState({ error_name: false });
         }
-        console.log(res);
       });
     }
   }
 
   updateUserFromSelect(e: { target: HTMLSelectElement }) {
     let { account } = this.props;
-    let { name, selectedOptions, selectedIndex } = e.target;
+    let { name, selectedOptions } = e.target;
     let obj: any = {};
-    console.log(selectedIndex);
-    console.log(e.target);
-    console.log(selectedOptions);
-    console.log(selectedOptions[0]);
     if (name === "gender") {
       obj = { gender: selectedOptions[0].value };
     } else {
       obj = { country: selectedOptions[0].value };
     }
-    console.log(obj);
     try {
       myFetch({
         path: `/user/${account?.id}`,
@@ -163,9 +171,14 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
       console.log(err);
     }
   }
+
   UpdateUserBirth() {
     setTimeout(() => {
-      let { day, month, year } = this.state;
+      let {
+        user: {
+          age: { day, month, year }
+        }
+      } = this.state;
       let { account } = this.props;
 
       if (day !== "" || month !== "" || year !== "") {
@@ -182,8 +195,33 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     }, 1000);
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      let { account } = this.props;
+      myFetch({
+        path: `/user/dev_info`,
+        method: "POST",
+        obj: { id: account?.id }
+      }).then((json: IDevInformation | null) => {
+        if (json) {
+          this.setState({ user: { ...json } });
+        }
+      });
+    }, 1);
+  }
+
   render() {
-    const { day, month, year, error_name } = this.state;
+    const {
+      user: {
+        name,
+        country,
+        state,
+        gender,
+        age: { day, month, year }
+      },
+      error_name
+    } = this.state;
+    const { countries } = this.props;
 
     return (
       <>
@@ -209,6 +247,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                     className="form-control"
                     placeholder="Your username? ;)"
                     onBlur={this.updateUserFromInput}
+                    defaultValue={`${name}`}
                   />
                 </div>
                 <div className="form-group col-3">
@@ -216,8 +255,13 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                   <select
                     name="gender"
                     className="form-control"
-                    defaultValue="DEFAULT"
-                    onChange={this.updateUserFromSelect}
+                    value={`${gender.toLowerCase()}`}
+                    onChange={(e)=>{
+                      let newUser = this.state.user;
+                      newUser.gender = e.target.selectedOptions[0].value;
+                      this.setState({ user: {...newUser} });
+
+                      this.updateUserFromSelect(e)}}
                   >
                     <option value="DEFAULT" disabled>
                       Find yourst, able?{" "}
@@ -228,7 +272,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                   </select>
                 </div>
                 <div className="form-group col-4">
-                  <label htmlFor="name">Username</label>
+                  <label>Date</label>
                   <div
                     className="form-control m-0 p-0 border-0"
                     style={{ textAlign: "left" }}
@@ -278,14 +322,19 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                     id="country"
                     name="country"
                     className="form-control"
-                    defaultValue={"DEFAULT"}
                     onMouseDown={this.selectEvent}
                     onChange={event => {
                       this.selectEvent(event);
                       this.updateUserFromSelect(event);
+                      /*
+                      let newUser = this.state.user;
+                      newUser.country = event.target.selectedOptions[0].value;
+                      this.setState({user: newUser});
+                      */
                     }}
                     onBlur={this.selectEvent}
                     style={{ position: "absolute", maxWidth: "94%" }}
+                    value={country}
                   >
                     <option
                       disabled
@@ -311,6 +360,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                     className="form-control"
                     placeholder=" City ? <---"
                     onBlur={this.updateUserFromInput}
+                    defaultValue={`${state}`}
                   />
                 </div>
               </div>

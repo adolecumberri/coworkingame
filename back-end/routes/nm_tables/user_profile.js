@@ -13,6 +13,6 @@ router.get("/", showAll);
 router.get("/:id", showById);
 router.post("/", insert);
 router.put("/:id", updateById);
-router.delete("/:id", deleteById);
+router.delete("/", deleteById);
 
 module.exports = router;

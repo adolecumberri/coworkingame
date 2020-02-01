@@ -1,10 +1,62 @@
 import React from "react";
 import { LOCAL_URL } from "src/constants";
+import { IStore } from "src/interface/IStore";
+import { IAccount } from "src/interface/IAccount";
+import { connect } from "react-redux";
+import { myFetchFiles } from "src/utils";
 
-class HeaderAvatar extends React.PureComponent {
+interface IProps { }
+interface IGlobalStateProps {
+  account: IAccount | null;
+}
+type TProps = IGlobalStateProps & IProps;
+
+interface IState {
+  avatarFile: string;
+  headerFile: string;
+}
+
+class HeaderAvatar extends React.PureComponent<TProps, IState> {
+  fileAvatar: React.RefObject<HTMLInputElement>;
+  fileHeader: React.RefObject<HTMLInputElement>;
+
+  constructor(props: TProps) {
+    super(props);
+    this.state = {
+      avatarFile: "",
+      headerFile: ""
+    };
+    this.fileAvatar = React.createRef();
+    this.fileHeader = React.createRef();
+    this.uploadAvatar = this.uploadAvatar.bind(this);
+  }
+
+  uploadAvatar() {
+    const { account } = this.props;
+    if (this.fileAvatar.current?.files) {
+      const formData = new FormData();
+      const path = this.fileAvatar.current.files[0];
+      console.log(path);
+      formData.append("avatar", path);
+
+      myFetchFiles({
+        method: "POST",
+        path: "/file/user",
+
+        formData
+      }).then(json => {
+        if (json) {
+          console.log("Sufro");
+          console.log(json);
+        }
+      });
+    }
+
+  }
+
   render() {
     //var activeRouteName = currentRoutes[currentRoutes.length - 1].name;
-   // console.log(activeRouteName);
+    // console.log(activeRouteName);
     return (
       <div className="container">
         <div className="card text-center  mt-4">
@@ -22,15 +74,13 @@ class HeaderAvatar extends React.PureComponent {
                   <input
                     type="file"
                     className="custom-file-input"
-                    id="fileAvatar"
-                    accept=".png, .jpg, .jpeg"
-                    onChange={e => {
-                      console.log(e);
-                    }}
+                    name="avatar"
+                    ref={this.fileAvatar}
+                    onChange={this.uploadAvatar}
                   />
                   <label
                     className="custom-file-label pl-n5 pr-5"
-                    htmlFor="fileAvatar"
+                    htmlFor="avatar"
                   >
                     Choose Avatar
                   </label>
@@ -39,6 +89,7 @@ class HeaderAvatar extends React.PureComponent {
                   </div>
                 </div>
                 <img
+                  alt="avatar for your Profile!"
                   src={LOCAL_URL + "/images/ico_logo40x40.png"}
                   className="rounded-circle mt-3"
                   id="foto_avatar"
@@ -56,13 +107,12 @@ class HeaderAvatar extends React.PureComponent {
                   <input
                     type="file"
                     className="custom-file-input"
-                    id="fileHeader"
+                    name="header"
+                    ref={this.fileHeader}
                     accept=".png, .jpg, .jpeg"
+                  // onChange={this.uploadFile}
                   />
-                  <label
-                    className="custom-file-label pl-n5"
-                    htmlFor="fileHeader"
-                  >
+                  <label className="custom-file-label pl-n5" htmlFor="header">
                     Choose Header
                   </label>
                   <div className="invalid-feedback">
@@ -70,6 +120,7 @@ class HeaderAvatar extends React.PureComponent {
                   </div>
                 </div>
                 <img
+                  alt="Header for your profile"
                   src={LOCAL_URL + "/images/header.jpeg"}
                   className="rounded mt-3"
                   id="foto_avatar"
@@ -83,5 +134,7 @@ class HeaderAvatar extends React.PureComponent {
     );
   }
 }
-
-export default HeaderAvatar;
+const mapStateToProps = ({ account }: IStore): IGlobalStateProps => ({
+  account
+});
+export default connect(mapStateToProps)(HeaderAvatar);

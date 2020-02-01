@@ -1,7 +1,7 @@
 import React from "react";
 import "./assets/App.css";
 import { generateAccountFromToken } from "./utils";
-import { BrowserRouter, Switch, Route} from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 /* IMPORT DE COMPONENTES  */
 /* Redux interfaces/actions */
@@ -26,6 +26,7 @@ import Profile from "./components/user/profile";
 
 /* Admin Stuff */
 import UserAdmin from "./components/admin/userAdmin";
+import Porfolio from "./components/user/porfolio";
 
 interface IGlobalStateProps {
   account: IAccount | null;
@@ -49,9 +50,6 @@ class App extends React.PureComponent<TProps> {
 
   render() {
     const { account } = this.props;
-    const isAdmin = account?.isAdmin;
-    console.log("Account");
-    console.log(account);
     return (
       <div className="app">
         <BrowserRouter>
@@ -64,11 +62,10 @@ class App extends React.PureComponent<TProps> {
             <Route path="/developers" exact component={developers} />
             <Route path="/enterprises" exact component={enterprises} />
             <Route path="/explore" exact component={explore} />
-            <Route path="/admin/user" component={UserAdmin}/>
-             <Route path="/user/profile" component={Profile}/>
-            
+            <Route path="/admin/user" component={UserAdmin} />
+            <Route path="/user/profile" component={Profile} />
+            <Route path="/dev/porfolio" component = {Porfolio} />
           </Switch>
-          
         </BrowserRouter>
       </div>
     );

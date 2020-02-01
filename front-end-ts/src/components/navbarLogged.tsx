@@ -23,11 +23,11 @@ class NavbarLogged extends React.PureComponent<TProps> {
 
     return (
       <>
-        <div className="container-fluid" style={{ margin: "0px" }}>
+        <div className="container-fluid " style={{ padding: "0px" }}>
 
             <div className="col-12" style={{ margin: "0px", padding: "0px" }}>
               <nav className="navbar navbar-expand navbar-light bg-light ">
-                <a className="navbar-brand" href="/">
+                <a className="navbar-brand ml-4" href="/">
                   <img
                     src={LOCAL_URL + "/images/ico_logo40x40.png"}
                     width="40px"

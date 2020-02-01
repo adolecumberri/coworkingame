@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Route, BrowserRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LogoutAction } from "src/redux/actions";
 import { IAccount } from "src/interface/IAccount";
 import { IStore } from "src/interface/IStore";
@@ -52,6 +52,7 @@ class Registered extends React.PureComponent<TProps, IState> {
             data-toggle="dropdown"
           >
             <img
+              alt="User Visual Stuff"
               src={`${LOCAL_URL}/images/ico_logo40x40.png`}
               id="mi_avatar"
               className="rounded-circle mt-1"

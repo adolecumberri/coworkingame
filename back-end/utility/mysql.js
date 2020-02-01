@@ -76,7 +76,10 @@ SQL.update = (table, fields = [], conditions = []) => {
   fields.map((value, i) => {
     //creación de conjuntos key = value
     let newVal = "";
-    if (typeof value[1] !== "number" && typeof value[1] !== "boolean" && value[0] !== "age")  {
+    if (typeof value[1] !== "number" 
+    && typeof value[1] !== "boolean" 
+    && value[0] !== "password"
+    && value[0] !== "age")  {
       newVal = `"${value[1]}"`;
     } else {
       newVal = value[1];
@@ -92,7 +95,7 @@ SQL.update = (table, fields = [], conditions = []) => {
     @params
     <[[String, any]]>   Conditions -> condiciones del select. (un array de arrays de 2 casillas)
   */
-SQL.remove = (table, conditions = []) => {
+SQL.delete = (table, conditions = []) => {
   return `DELETE FROM ${table} ${createConditions(conditions)}`;
 };
 

@@ -4,9 +4,13 @@ import DeveloperData from "./profile_conponents/developerData";
 import Categories from "./profile_conponents/categories";
 import ChangePassword from "./profile_conponents/changePassword";
 import { Route, Link } from "react-router-dom";
-import { LOCAL_URL } from "src/constants";
+
+/* JSON de ciudades. */
+import countries from "../../jsons/cities.json";
+
 
 class Profile extends React.PureComponent {
+
   render() {
     // let currentLink = window.location.href.substr(LOCAL_URL.length);
     // console.log(LOCAL_URL);
@@ -37,7 +41,6 @@ class Profile extends React.PureComponent {
               to="/user/profile/developer/data"
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              {" "}
               <li className="nav-item btn btn-danger mx-2">
                 Developer information
               </li>{" "}
@@ -73,8 +76,7 @@ class Profile extends React.PureComponent {
               to="/user/profile/change_password"
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              {" "}
-              <li className="nav-item btn btn-danger mx-2">Change Password</li>
+              <li className="nav-item btn btn-danger mx-2">Account Data</li>
             </Link>
           </ul>
         </div>
@@ -87,21 +89,18 @@ class Profile extends React.PureComponent {
               exact
               component={HeaderAvatar}
             />
-            <Route
-              path="/user/profile/developer/data"
-              exact
-              component={DeveloperData}
-            />
+
+            <Route path="/user/profile/developer/data" exact>
+              <DeveloperData countries={countries}></DeveloperData>
+            </Route>
             {/* <Route
               path="/user/profile/developer/state"
               exact
               component={DeveloperState}
             /> */}
-            <Route
-              path="/user/profile/categories"
-              exact
-              component={Categories}
-            />
+            <Route path="/user/profile/categories" exact>
+              <Categories  />
+            </Route>
             {/* <Route path="/user/profile/CV" exact component={CV} /> */}
             <Route
               path="/user/profile/change_password"

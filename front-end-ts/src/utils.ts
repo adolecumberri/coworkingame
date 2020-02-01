@@ -3,7 +3,6 @@ import { IAccount } from "./interface/IAccount";
 import { decode } from "jsonwebtoken";
 import { ITokenPayload } from "./interface/ITokenPayload";
 
-/* Tipado de entrada de atributos*/
 export const myFetch = async ({
   method = "GET",
   path,
@@ -31,6 +30,46 @@ export const myFetch = async ({
   }
 };
 
+/* Tipado de entrada de atributos*/
+export const myFetchFiles = async ({
+  method = "GET",
+  path,
+  obj,
+  formData,
+  token
+}: {
+  path: string;
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  obj?: Object;
+  formData?: FormData;
+  token?: string;
+}) => {
+  let headers = new Headers();
+  let body = undefined;
+  if (obj) {
+    headers.set("Content-Type", "application/json");
+    body = JSON.stringify(obj);
+  } else if (formData) {
+    body = formData;
+  }
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  console.log(body);
+  const response = await fetch(API_URL + path, {
+    method,
+    headers,
+    body
+  });
+  try {
+    const json = await response.json();
+    return json;
+  } catch {
+    return null;
+  }
+};
+
 export const myLocalStorage = (key: string, value: string) => {
   const now = new Date();
 
@@ -43,6 +82,6 @@ export const myLocalStorage = (key: string, value: string) => {
 };
 
 export const generateAccountFromToken = (token: string): IAccount => {
-  const { id, name, header, isAdmin } = decode(token) as ITokenPayload;
-  return { token, id, name, header, isAdmin };
+  const { id, name, header,avatar, isAdmin } = decode(token) as ITokenPayload;
+  return { token, id, name, header, avatar, isAdmin };
 };

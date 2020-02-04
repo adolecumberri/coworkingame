@@ -1,4 +1,6 @@
-var { Router } = require("express");
+var {
+  Router
+} = require("express");
 var router = Router();
 
 const {
@@ -7,12 +9,13 @@ const {
   insert,
   updateById,
   deleteById
-} = require("../../controllers/nm_tables_controller/user_porfolio");
+} = require("../../controllers/common_tables_controller/portfolio");
 
 router.get("/", showAll);
 router.get("/:id", showById);
 router.post("/", insert);
 router.put("/:id", updateById);
 router.delete("/:id", deleteById);
+
 
 module.exports = router;

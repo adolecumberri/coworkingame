@@ -1,6 +1,5 @@
 import { API_URL } from "./constants";
 import { IAccount } from "./interface/IAccount";
-import { decode } from "jsonwebtoken";
 import { ITokenPayload } from "./interface/ITokenPayload";
 
 export const myFetch = async ({
@@ -29,7 +28,7 @@ export const myFetch = async ({
     return null;
   }
 };
-
+/* Mejorable. */
 /* Tipado de entrada de atributos*/
 export const myFetchFiles = async ({
   method = "GET",
@@ -70,6 +69,8 @@ export const myFetchFiles = async ({
   }
 };
 
+
+/* introduce Local storage + time */
 export const myLocalStorage = (key: string, value: string) => {
   const now = new Date();
 
@@ -77,11 +78,27 @@ export const myLocalStorage = (key: string, value: string) => {
     value: value,
     expiry: now.getTime() + 86400000
   };
-
   localStorage.setItem(key, JSON.stringify(item));
 };
 
-export const generateAccountFromToken = (token: string): IAccount => {
-  const { id, name, header,avatar, isAdmin } = decode(token) as ITokenPayload;
+
+export const generateAccountFromToken = (token: ITokenPayload | string): IAccount => {
+  const { id, name, header, avatar, isAdmin } = token as ITokenPayload;
+  token = JSON.stringify(token)
+
   return { token, id, name, header, avatar, isAdmin };
 };
+
+export const updateToken = (obj:
+  {
+    id?: number,
+    name?: string,
+    header?: string,
+    avatar?: string,
+    isAdmin?: boolean
+  }
+) => {
+  /* TODO: refactorizar */
+  /* preguntar a carlos sobre destructuraciones. */
+
+}

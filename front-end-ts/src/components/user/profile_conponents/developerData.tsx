@@ -1,12 +1,18 @@
 import React from "react";
-import { myFetch } from "../../../utils";
+import { myFetch, myLocalStorage } from "../../../utils";
 import { connect } from "react-redux";
 
 import { IDevInformation } from "../../../interface/IUser";
 import { IAccount } from "../../../interface/IAccount.js";
 import { IStore } from "../../../interface/IStore";
+import { SetAccountAction } from "src/redux/actions";
+
 interface IGlobalStateProps {
   account: IAccount | null;
+}
+
+interface IGlobalActionProps {
+  setAccount(account: IAccount): void;
 }
 
 interface IProps {
@@ -21,7 +27,7 @@ interface IState {
   user: IDevInformation;
 }
 
-type TProps = IGlobalStateProps & IProps;
+type TProps = IGlobalStateProps & IProps & IGlobalActionProps;
 
 class DeveloperData extends React.PureComponent<TProps, IState> {
   constructor(props: TProps) {
@@ -62,7 +68,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
       this.setState({ user: { ...newUser } });
     }
 
-    if (value.length === "2") {
+    if (value.length === 2) {
       document.getElementById("month-input")?.focus();
     }
     /* Esto puede fallar porque aunque no se actualice el estado,
@@ -79,7 +85,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
       this.setState({ user: { ...newUser } });
     }
 
-    if (value.length === "2") {
+    if (value.length === 2) {
       document.getElementById("year-input")?.focus();
     }
   }
@@ -91,7 +97,11 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     let newUser = { ...this.state.user };
 
     if (parseInt(value) <= new Date().getFullYear() || !parseInt(value)) {
-      if (value.length === "4" && parseInt(value) <= 1950 && e.type === "blur") {
+      if (
+        value.length === "4" &&
+        parseInt(value) <= 1950 &&
+        e.type === "blur"
+      ) {
         newUser.age.year = "1970";
         this.setState({ user: { ...newUser } });
       } else {
@@ -102,7 +112,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
       newUser.age.year = "" + new Date().getFullYear();
       this.setState({ user: { ...newUser } });
     }
-    if (value.length === "4") {
+    if (value.length === 4) {
       document.getElementById("country")?.focus();
     }
   }
@@ -122,7 +132,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     if (select.selectedOptions) {
       let newUser = this.state.user;
       newUser.country = select.selectedOptions[0].value;
-      this.setState({ user: {...newUser} });
+      this.setState({ user: { ...newUser } });
     }
   }
 
@@ -133,6 +143,17 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     if (value.length >= 3) {
       if (name === "name") {
         obj = { name: value };
+        //TODO: cambiar por funcion de actualizar TOKEN/REDUX
+        /* ACTUALIZACION DE REDUX Y EL TOKEN */
+        /* Actualizacion del token tras el update */
+        let token = localStorage.getItem("coworkin_token");
+        // El token trae expire & value. Value es el token como tal.
+        // lo convierto en objeto y saco el value.
+        let newToken = token ? JSON.parse(token).value : null;
+        // decodifico newToken en un objeto
+        newToken.name = value;
+        myLocalStorage("coworkin_token", newToken);
+        this.props.setAccount(newToken);
       } else {
         obj = { state: value };
       }
@@ -255,13 +276,14 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                   <select
                     name="gender"
                     className="form-control"
-                    value={`${gender.toLowerCase()}`}
-                    onChange={(e)=>{
+                    value={gender ? `${gender.toLowerCase()}` : "DEFAULT"}
+                    onChange={e => {
                       let newUser = this.state.user;
                       newUser.gender = e.target.selectedOptions[0].value;
-                      this.setState({ user: {...newUser} });
+                      this.setState({ user: { ...newUser } });
 
-                      this.updateUserFromSelect(e)}}
+                      this.updateUserFromSelect(e);
+                    }}
                   >
                     <option value="DEFAULT" disabled>
                       Find yourst, able?{" "}
@@ -282,7 +304,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                       type="number"
                       className=" form-control col-4 float-left my-numeric-input"
                       placeholder="DD"
-                      value={day}
+                      value={day ? day : ""}
                       onChange={this.checkDay}
                       onBlur={this.UpdateUserBirth}
                       min="1"
@@ -334,7 +356,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                     }}
                     onBlur={this.selectEvent}
                     style={{ position: "absolute", maxWidth: "94%" }}
-                    value={country}
+                    value={country ? country : "DEFAULT"}
                   >
                     <option
                       disabled
@@ -360,7 +382,7 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
                     className="form-control"
                     placeholder=" City ? <---"
                     onBlur={this.updateUserFromInput}
-                    defaultValue={`${state}`}
+                    defaultValue={state ? `${state}` : ""}
                   />
                 </div>
               </div>
@@ -372,9 +394,13 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
   }
 }
 
+const mapDispatchToProps: IGlobalActionProps = {
+  setAccount: SetAccountAction
+};
+
 /* algo que recibo */
 const mapStateToProps = ({ account }: IStore): IGlobalStateProps => ({
   account
 });
 
-export default connect(mapStateToProps)(DeveloperData);
+export default connect(mapStateToProps, mapDispatchToProps)(DeveloperData);

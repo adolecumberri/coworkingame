@@ -1,33 +1,31 @@
-const { Router } = require("express");
+const {
+  Router
+} = require("express");
 const router = Router();
 const multer = require("multer");
+
 const {
   uploadUserAvatar,
   uploadUserHeader
 } = require("../../controllers/files_controller/files");
 
-/* viene en el req un objeto "file" o "files"
- - Necesito en el front un:
-        <form action="/profile" method="post" enctype="multipart/form-data">
-            <input type="file" name="avatar" />
-        </form>
-*/
-
-const AvatarStorage = multer.diskStorage({
-  destination: "public/multimedia/avatar",
-  filename: (_req, file, cb) => {
+const storage = multer.diskStorage({
+  destination: "public/multimedia",
+  filename: (req, file, cb) => {
     const extension = file.originalname.slice(
       file.originalname.lastIndexOf(".")
     );
-    cb(null, new Date().valueOf() + extension);
+    let newName = new Date().valueOf() + req.params.id + extension;
+    file.newName = newName;
+    cb(null, newName);
   }
 });
 
-/* INPUT FILE es el input del front */
-const uploadAvatar = multer({ AvatarStorage }).single("avatar");
+const uploadAvatar = multer({
+  storage
+});
 
-
-router.post("/user", uploadAvatar, uploadUserAvatar);
-router.post("/user/header", uploadAvatar, uploadUserHeader);
+router.put("/user/:id", uploadAvatar.single("file"), uploadUserAvatar);
+router.put("/header/:id", uploadAvatar.single("file"), uploadUserHeader);
 
 module.exports = router;

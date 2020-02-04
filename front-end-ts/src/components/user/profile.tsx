@@ -8,9 +8,7 @@ import { Route, Link } from "react-router-dom";
 /* JSON de ciudades. */
 import countries from "../../jsons/cities.json";
 
-
 class Profile extends React.PureComponent {
-
   render() {
     // let currentLink = window.location.href.substr(LOCAL_URL.length);
     // console.log(LOCAL_URL);
@@ -99,7 +97,7 @@ class Profile extends React.PureComponent {
               component={DeveloperState}
             /> */}
             <Route path="/user/profile/categories" exact>
-              <Categories  />
+              <Categories />
             </Route>
             {/* <Route path="/user/profile/CV" exact component={CV} /> */}
             <Route

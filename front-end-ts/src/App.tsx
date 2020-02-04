@@ -64,7 +64,7 @@ class App extends React.PureComponent<TProps> {
             <Route path="/explore" exact component={explore} />
             <Route path="/admin/user" component={UserAdmin} />
             <Route path="/user/profile" component={Profile} />
-            <Route path="/dev/porfolio" component = {Porfolio} />
+            <Route path="/dev/porfolio/:id" component={Porfolio} />
           </Switch>
         </BrowserRouter>
       </div>

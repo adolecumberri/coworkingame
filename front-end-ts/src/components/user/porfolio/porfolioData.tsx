@@ -1,20 +1,14 @@
 import React from "react";
 
 interface IProps {
-  id_user: number | undefined
+  id_user: number;
 }
 
+interface IState {}
 
-class PorfolioData extends React.PureComponent<IProps> {
-  constructor(props: IProps) {
-    super(props);
-  }
+class PorfolioData extends React.PureComponent<IProps, IState> {
   render() {
-    return (
-      <div className="card-header">
-        Information
-      </div>
-    );
+    return <div className="card-header">Information</div>;
   }
 }
 

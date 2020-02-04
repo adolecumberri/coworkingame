@@ -17,6 +17,11 @@ controller.showAll = (_, res) => {
             //saco las categorias (solo las categorias)
             let sql = "select * from profile where category is not null order by category asc, name asc";
             connection.query(sql, (err, catNotNulls) => {
+              console.log({
+                categories,
+                catNulls,
+                catNotNulls
+              });
               res.send({
                 categories,
                 catNulls,
@@ -67,6 +72,41 @@ controller.deleteById = ({
   ]), (e, result) => {
     if (e) throw e;
     res.send(result);
+  });
+};
+
+controller.showUserPorfolio = (req, res) => {
+
+  console.log(req.params);
+
+  let sql = `select profile.* 
+    from profile 
+    inner join user_profile 
+    on profile.id = user_profile.id_profile
+    where id_user = ${req.params.id};`;
+  connection.query(sql, (err, result) => {
+    if (err) res.sendStatus(400);
+
+    if (result !== undefined) { //la Id puede venir undefined, tengo que parsear esto
+      let sql2 = `select category 
+      from profile 
+      inner join user_profile
+      on profile.id = user_profile.id_profile
+      where category is not null AND user_profile.id_user =  ${req.params.id}
+      group by category 
+      order by category asc;`
+
+      connection.query(sql2,
+        (err, categories) => {
+          if (err) res.sendStatus(400);
+          res.send({
+            categories,
+            result: result
+          });
+        });
+    }
+
+
   });
 };
 

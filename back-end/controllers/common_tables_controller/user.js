@@ -44,6 +44,7 @@ controller.insert = ({
               res.sendStatus(400);
             } else {
               const token = createUserToken(newUser[0]);
+              createDirs(newUser[0].id);
               res.send({
                 user: {
                   id: newUser[0].id,
@@ -67,19 +68,17 @@ controller.updateById = ({
   },
   body
 }, res) => {
-  console.log(bbdd.update("user", objToArray(body), [
+
+  connection.query(
+    bbdd.update("user", objToArray(body), [
       ["id", id]
-    ])),
-    connection.query(
-      bbdd.update("user", objToArray(body), [
-        ["id", id]
-      ]),
-      (e, result) => {
-        if (e) res.sendStatus(401);
-        console.log(result);
-        res.send(result);
-      }
-    );
+    ]),
+    (e, result) => {
+      if (e) res.sendStatus(401);
+      console.log(result);
+      res.send(result);
+    }
+  );
 };
 
 /*No*/
@@ -106,14 +105,19 @@ controller.login = ({
     (err, result) => {
       if (err) res.sendStatus(400);
       console.log(result);
-      const token = createUserToken({
-        id: result[0].id,
-        name: result[0].name,
-        header: result[0].header,
-        avatar: result[0].avatar,
-        isAdmin: result[0].isAdmin
-      });
-      res.json(token); //POR QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!
+      if (result) {
+        const token = createUserToken({
+          id: result[0].id,
+          name: result[0].name,
+          header: result[0].header,
+          avatar: result[0].avatar,
+          isAdmin: result[0].isAdmin
+        });
+        res.json(token); //POR QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!
+      } else {
+        res.sendStatus(400);
+      }
+
     }
   );
 };
@@ -157,6 +161,26 @@ controller.getDevInfo = (req, res) => {
   );
 };
 
+controller.getImages = (req, res) => {
+  connection.query(`SELECT avatar, header FROM user where id = ${req.params.id}`,
+    (err, result) => {
+      if (err) res.send(400);
+      res.send(result[0]);
+    })
+}
+
+controller.getNameById = ({
+  params: {
+    id
+  }
+}, res) => {
+  connection.query(`SELECT name FROM user WHERE id = ${id}`,
+    (err, result) => {
+      if (err) throw err;
+      res.send(result[0]);
+    })
+}
+
 controller.checkPassword = (req, res) => {
   const {
     old_pssw,
@@ -177,6 +201,22 @@ controller.checkPassword = (req, res) => {
     });
 };
 
+/* Unused */
 controller.confirmUser = (req, res) => {};
+
+const createDirs = (id) => {
+  const fs = require('fs');
+  let dir = `public/multimedia/user_${id}`;
+  if (!fs.existsSync(dir)) {
+
+    fs.mkdirSync(dir);
+    fs.mkdirSync(dir + "/avatar");
+    fs.mkdirSync(dir + "/header");
+    fs.mkdirSync(dir + "/thumb");
+    fs.mkdirSync(dir + "/porfolio");
+
+  }
+
+}
 
 module.exports = controller;

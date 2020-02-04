@@ -177,16 +177,16 @@ CREATE TABLE `message` (
 CREATE TABLE `user_social_media`(
   `id_user` int NOT NULL,
   `id_social_media` int NOT NULL,
-  FOREIGN KEY(id_user) REFERENCES user(id),
-  FOREIGN KEY(id_social_media) REFERENCES social_media(id),
+  FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY(id_social_media) REFERENCES social_media(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_social_media)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `user_profile`(
   `id_user` int  NOT NULL,
   `id_profile` int NOT NULL,
-  FOREIGN KEY(id_user) REFERENCES user(id),
-  FOREIGN KEY(id_profile) REFERENCES profile(id),
+  FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY(id_profile) REFERENCES profile(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_profile)
 ) ENGINE=InnoDB;
 
@@ -194,8 +194,8 @@ CREATE TABLE `user_portfolio` (
   `id_user` int(11) NOT NULL,
   `id_portfolio` int(11) NOT NULL,
   `request_status` enum('send','accepted','refused'),
-  FOREIGN KEY(id_user) REFERENCES user(id),
-  FOREIGN KEY(id_portfolio) REFERENCES portfolio(id),
+  FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY(id_portfolio) REFERENCES portfolio(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_portfolio)
 ) ENGINE=InnoDB;
 
@@ -206,8 +206,8 @@ CREATE TABLE `user_enterprise` (
   `request_status` enum('send','accepted','refused'),
   `admin` int(11) DEFAULT NULL, 
   `type_user` enum('basic','updater','admin'),
-  FOREIGN KEY(id_user) REFERENCES user(id),
-  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id),
+  FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_enterprise)
 ) ENGINE=InnoDB;
 
@@ -215,8 +215,8 @@ CREATE TABLE `user_project` (
   `id_user` int NOT NULL,
   `id_project` int NOT NULL,
   `request_status` enum('send','accepted','refused'),
-  FOREIGN KEY(id_user) REFERENCES user(id),
-  FOREIGN KEY(id_project) REFERENCES project(id),
+  FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY(id_project) REFERENCES project(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_project)
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
 
@@ -224,8 +224,8 @@ CREATE TABLE `user_project` (
 CREATE TABLE `enterprise_social_media`(
   `id_enterprise` int NOT NULL,
   `id_social_media` int NOT NULL,
-  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id),
-  FOREIGN KEY(id_social_media) REFERENCES social_media(id),
+  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id)  ON DELETE CASCADE,
+  FOREIGN KEY(id_social_media) REFERENCES social_media(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_enterprise, id_social_media)
 ) ENGINE=InnoDB;
 
@@ -233,7 +233,7 @@ CREATE TABLE `enterprise_project` (
   `id_enterprise` int NOT NULL,
   `id_project` int NOT NULL,
   `request_status` enum('send','accepted','refused'),
-  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id),
+  FOREIGN KEY(id_enterprise) REFERENCES enterprise(id)  ON DELETE CASCADE,
   FOREIGN KEY(id_project) REFERENCES project(id),
   PRIMARY KEY (id_enterprise, id_project)
 ) ENGINE=InnoDB;
@@ -244,8 +244,8 @@ CREATE TABLE `seen_user_user` (
   `id_user` int NOT NULL,
   `id_whatched` int NOT NULL,
   `seen_flag` varchar(15),
-  FOREIGN KEY (id_user) REFERENCES user(id),
-  FOREIGN KEY (id_whatched) REFERENCES user(id),
+  FOREIGN KEY (id_user) REFERENCES user(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_whatched) REFERENCES user(id) ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_whatched)
 )ENGINE = InnoDB;
 
@@ -253,8 +253,8 @@ CREATE TABLE `seen_user_enterprise` (
   `id_user` int NOT NULL,
   `id_enterprise` int NOT NULL,
   `seen_flag` varchar(15),
-  FOREIGN KEY (id_user) REFERENCES user(id),
-  FOREIGN KEY (id_enterprise) REFERENCES enterprise(id),
+  FOREIGN KEY (id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY (id_enterprise) REFERENCES enterprise(id) ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_enterprise)
 )ENGINE = InnoDB;
 
@@ -262,8 +262,8 @@ CREATE TABLE `seen_user_project` (
   `id_user` int NOT NULL,
   `id_project` int NOT NULL,
   `seen_flag` varchar(15),
-  FOREIGN KEY (id_user) REFERENCES user(id),
-  FOREIGN KEY (id_project) REFERENCES project(id),
+  FOREIGN KEY (id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY (id_project) REFERENCES project(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_project)
 )ENGINE = InnoDB;
 
@@ -271,8 +271,8 @@ CREATE TABLE `seen_user_portfolio` (
   `id_user` int NOT NULL,
   `id_portfolio` int NOT NULL,
   `seen_flag` varchar(15),
-  FOREIGN KEY (id_user) REFERENCES user(id),
-  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
+  FOREIGN KEY (id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id) ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_portfolio)
 )ENGINE = InnoDB;
 
@@ -281,8 +281,8 @@ CREATE TABLE `likes_user_portfolio` (
   `id_user` int NOT NULL,
   `id_portfolio` int NOT NULL,
   `like` tinyint(1) DEFAULT 0,
-  FOREIGN KEY (id_user) REFERENCES user(id),
-  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
+  FOREIGN KEY (id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_portfolio)
 )ENGINE = InnoDB;
 
@@ -290,8 +290,8 @@ CREATE TABLE `likes_user_project` (
   `id_user` int NOT NULL,
   `id_project` int NOT NULL,
   `like` tinyint(1) DEFAULT 0,
-  FOREIGN KEY (id_user) REFERENCES user(id),
-  FOREIGN KEY (id_project) REFERENCES project(id),
+  FOREIGN KEY (id_user) REFERENCES user(id)  ON DELETE CASCADE,
+  FOREIGN KEY (id_project) REFERENCES project(id)  ON DELETE CASCADE,
   PRIMARY KEY (id_user, id_project)
 )ENGINE = InnoDB;
 

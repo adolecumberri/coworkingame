@@ -4,7 +4,7 @@ import { LogoutAction } from "src/redux/actions";
 import { IAccount } from "src/interface/IAccount";
 import { IStore } from "src/interface/IStore";
 import { connect } from "react-redux";
-import { LOCAL_URL } from "src/constants";
+import { LOCAL_URL, API_URL } from "src/constants";
 
 interface IGlobalStateProps {
   account: IAccount | null;
@@ -33,7 +33,8 @@ class Registered extends React.PureComponent<TProps, IState> {
   }
 
   render() {
-    const { account } = this.props;
+    const { id, avatar, name } = this.props.account as IAccount;
+
     return (
       <ul
         className="navbar-nav mr-5 pr-4 "
@@ -51,16 +52,18 @@ class Registered extends React.PureComponent<TProps, IState> {
             role="button"
             data-toggle="dropdown"
           >
+            {/* avatar
+                      ? `${API_URL}/multimedia/user_${id}/avatar/${avatar}`
+                      : `${LOCAL_URL}/images/ico_logo40x40.png` */}
             <img
               alt="User Visual Stuff"
-              src={`${LOCAL_URL}/images/ico_logo40x40.png`}
+              src={`${API_URL}/multimedia/user_${id}/avatar/${avatar}`}
               id="mi_avatar"
               className="rounded-circle mt-1"
               style={{ float: "left", height: "5vh" }}
             />
             <div className="float-left ml-3 mr-2 pt-2">
-              {account?.name}{" "}
-              <i className="fa fa-caret-down" aria-hidden="true"></i>
+              {name} <i className="fa fa-caret-down" aria-hidden="true"></i>
             </div>
           </a>
           <div className="dropdown-menu">
@@ -71,9 +74,9 @@ class Registered extends React.PureComponent<TProps, IState> {
               <i className="fas fa-user-edit"></i>My Profile
             </Link>
 
-            {/* <Link to="/" className="dropdown-item">
+            <Link to="/" className="dropdown-item">
               <i className="far fa-id-card"></i>My Portfolio
-            </Link> */}
+            </Link>
             <div className="dropdown-divider"></div>
 
             {/* <label className=" ml-3" style={{ color: "#a1a1a1" }}>

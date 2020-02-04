@@ -2,26 +2,23 @@ import React from "react";
 import { myFetch } from "src/utils";
 import { IAdminUser } from "src/interface/IUser";
 
-interface IProps { }
+interface IProps {}
 
 interface IState {
   users: IAdminUser[] | any;
-  userSelected: number;
-  idSelected: number;
 }
 
 class UserAdmin extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      users: [],
-      userSelected: 0,
-      idSelected: 0
+      users: []
     };
-
   }
 
-  componentDidMount() {
+  render() {
+    /* Algoritmica para crear las tarjetas? */
+
     console.log("fetch lanzao");
     myFetch({
       path: "/admin/user",
@@ -29,22 +26,14 @@ class UserAdmin extends React.PureComponent<IProps, IState> {
     }).then(json => {
       this.setState({ users: json });
     });
-  }
-
-
-  render() {
-    /* Algoritmica para crear las tarjetas? */
 
     const { users } = this.state;
     return (
-      <div className="container" style={{ marginTop: "100px" }} >
+      <div className="container" style={{ marginTop: "100px" }}>
         <div className="d-flex align-items-center justify-content-center">
-          <div
-            className="col-12"
-
-          >
+          <div className="col-12">
             <table className="table table-striped">
-              <thead  >
+              <thead>
                 <tr>
                   <th scope="col" className="text-center">
                     #
@@ -61,82 +50,60 @@ class UserAdmin extends React.PureComponent<IProps, IState> {
                 </tr>
               </thead>
               <tbody>
-
-                {
-                  users.map((user: any) => {
-                    return (
-                      <tr key={user.id} >
-                        <td className="text-center">{user.id}</td>
-                        <td className="text-center">{user.name}</td>
-                        <td className="text-center">{user.email}</td>
-                        <td className="d-flex justify-content-between">
-                          <div>
-                            <input
-                              type="radio"
-                              name={user.id}
-                              id={`admin${user.id}`}
-                              onChange={(e) => {
-
-                                myFetch({
-                                  path: "/user/" + e.target.id,
-                                  method: "PUT",
-                                  obj: { isAdmin: 1 }
-                                }).then(() => {
-                                  this.setState({ users: [...users] });
-                                });
-                              }}
-                              checked={user.isAdmin ? true : false }
-                              className="form-check-input mr-2"
-                            />
-                            <label htmlFor={`admin${user.id}`}>Admin</label></div>
-                          <div>
-                            <input
-                              type="radio"
-                              name={user.id}
-                              id={`noAdmin${user.id}`}
-                              onChange={(e) => {
-
-                                myFetch({
-                                  path: "/user/" + e.target.id,
-                                  method: "PUT",
-                                  obj: { isAdmin: 0 }
-                                }).then(() => {
-                                  this.setState({ users: [...users] });
-                                });
-                              }}
-                              checked={!user.isAdmin ? true : false }
-                              className="form-check-input mr-2"
-                            />
-                            <label htmlFor={`noAdmin${user.id}`} >No Admin</label></div>
-
-
-                        </td>
-                      </tr>
-                    )
-
-
-                  }
-                  )}
-
-
-
-
-
-
-
-
+                {users.map((user: any) => {
+                  return (
+                    <tr key={user.id}>
+                      <td className="text-center">{user.id}</td>
+                      <td className="text-center">{user.name}</td>
+                      <td className="text-center">{user.email}</td>
+                      <td className="d-flex justify-content-between">
+                        <div>
+                          <input
+                            type="radio"
+                            name={user.id}
+                            id={`admin${user.id}`}
+                            onChange={e => {
+                              myFetch({
+                                path: "/user/" + e.target.name,
+                                method: "PUT",
+                                obj: { isAdmin: 1 }
+                              }).then(() => {
+                                //this.setState({ users: [...users] });
+                              });
+                            }}
+                            checked={user.isAdmin ? true : false}
+                            className="form-check-input mr-2"
+                          />
+                          <label htmlFor={`admin${user.id}`}>Admin</label>
+                        </div>
+                        <div>
+                          <input
+                            type="radio"
+                            name={user.id}
+                            id={`noAdmin${user.id}`}
+                            onChange={e => {
+                              myFetch({
+                                path: "/user/" + e.target.name,
+                                method: "PUT",
+                                obj: { isAdmin: 0 }
+                              }).then(() => {
+                                // this.setState({ users: [...users] });
+                              });
+                            }}
+                            checked={!user.isAdmin ? true : false}
+                            className="form-check-input mr-2"
+                          />
+                          <label htmlFor={`noAdmin${user.id}`}>No Admin</label>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-
-
-
-
           </div>
-
-
-
-        </div >
-      </div >
+        </div>
+      </div>
     );
   }
 }

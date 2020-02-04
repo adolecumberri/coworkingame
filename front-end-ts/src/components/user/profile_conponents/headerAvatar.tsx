@@ -1,19 +1,24 @@
 import React from "react";
-import { LOCAL_URL } from "src/constants";
+import { LOCAL_URL, API_URL } from "src/constants";
 import { IStore } from "src/interface/IStore";
 import { IAccount } from "src/interface/IAccount";
 import { connect } from "react-redux";
-import { myFetchFiles } from "src/utils";
+import { myFetchFiles, myLocalStorage } from "src/utils";
+import { SetAccountAction } from "src/redux/actions";
 
-interface IProps { }
+interface IProps {}
 interface IGlobalStateProps {
   account: IAccount | null;
 }
-type TProps = IGlobalStateProps & IProps;
+
+interface IGlobalActionProps {
+  setAccount(account: IAccount): void;
+}
+
+type TProps = IGlobalStateProps & IProps & IGlobalActionProps;
 
 interface IState {
-  avatarFile: string;
-  headerFile: string;
+  update: boolean;
 }
 
 class HeaderAvatar extends React.PureComponent<TProps, IState> {
@@ -23,40 +28,84 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
   constructor(props: TProps) {
     super(props);
     this.state = {
-      avatarFile: "",
-      headerFile: ""
+      update: false
     };
     this.fileAvatar = React.createRef();
     this.fileHeader = React.createRef();
+
     this.uploadAvatar = this.uploadAvatar.bind(this);
+    this.uploadHeader = this.uploadHeader.bind(this);
   }
 
   uploadAvatar() {
-    const { account } = this.props;
     if (this.fileAvatar.current?.files) {
       const formData = new FormData();
       const path = this.fileAvatar.current.files[0];
-      console.log(path);
-      formData.append("avatar", path);
+      formData.append("file", path);
 
       myFetchFiles({
-        method: "POST",
-        path: "/file/user",
-
+        method: "PUT",
+        path: `/records/user/${this.props.account?.id}`,
         formData
       }).then(json => {
+        //TODO: sustituir
         if (json) {
-          console.log("Sufro");
-          console.log(json);
+          /* Actualizacion del token tras el update */
+          let token = localStorage.getItem("coworkin_token");
+          // El token trae expire & value. Value es el token como tal.
+          // lo convierto en objeto y saco el value.
+          let newToken = token ? JSON.parse(token).value : null;
+          // decodifico newToken en un objeto
+          newToken.avatar = json.avatar;
+          newToken.header = json.header;
+          /* Actualizacion TOKEN y ACCOUNT (redux) */
+          myLocalStorage("coworkin_token", newToken);
+          this.props.setAccount(newToken);
+
+          //Estado para que se actualice el componente
+          this.setState({ update: !this.state.update });
         }
       });
     }
-
   }
 
+  uploadHeader() {
+    if (this.fileHeader.current?.files) {
+      const formData = new FormData();
+      const path = this.fileHeader.current.files[0];
+      formData.append("file", path);
+
+      myFetchFiles({
+        method: "PUT",
+        path: `/records/header/${this.props.account?.id}`,
+        formData
+      }).then(json => {
+        //TODO: sustituir
+        if (json) {
+          /* Actualizacion del token tras el update */
+          let token = localStorage.getItem("coworkin_token");
+          // El token trae expire & value. Value es el token como tal.
+          // lo convierto en objeto y saco el value.
+          let newToken = token ? JSON.parse(token).value : null;
+          // decodifico newToken en un objeto
+          newToken.avatar = json.avatar;
+          newToken.header = json.header;
+          myLocalStorage("coworkin_token", newToken);
+          this.props.setAccount(newToken);
+
+          //Estado para que se actualice el componente
+          this.setState({ update: !this.state.update });
+        }
+      });
+    }
+  }
+
+  componentDidMount() {}
+
   render() {
-    //var activeRouteName = currentRoutes[currentRoutes.length - 1].name;
-    // console.log(activeRouteName);
+    const header = this.props.account?.header;
+    const avatar = this.props.account?.avatar;
+    const id = this.props.account?.id;
     return (
       <div className="container">
         <div className="card text-center  mt-4">
@@ -90,7 +139,11 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
                 </div>
                 <img
                   alt="avatar for your Profile!"
-                  src={LOCAL_URL + "/images/ico_logo40x40.png"}
+                  src={
+                    avatar
+                      ? `${API_URL}/multimedia/user_${id}/avatar/${avatar}`
+                      : `${LOCAL_URL}/images/ico_logo40x40.png`
+                  }
                   className="rounded-circle mt-3"
                   id="foto_avatar"
                   style={{ height: "160px", width: "160px" }}
@@ -110,7 +163,7 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
                     name="header"
                     ref={this.fileHeader}
                     accept=".png, .jpg, .jpeg"
-                  // onChange={this.uploadFile}
+                    onChange={this.uploadHeader}
                   />
                   <label className="custom-file-label pl-n5" htmlFor="header">
                     Choose Header
@@ -121,10 +174,14 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
                 </div>
                 <img
                   alt="Header for your profile"
-                  src={LOCAL_URL + "/images/header.jpeg"}
+                  src={
+                    header
+                      ? `${API_URL}/multimedia/user_${id}/header/${header}`
+                      : `${LOCAL_URL}/images/header.jpeg`
+                  }
                   className="rounded mt-3"
                   id="foto_avatar"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", maxHeight: "163px" }}
                 />
               </div>
             </div>
@@ -134,7 +191,12 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
     );
   }
 }
+
+const mapDispatchToProps: IGlobalActionProps = {
+  setAccount: SetAccountAction
+};
+
 const mapStateToProps = ({ account }: IStore): IGlobalStateProps => ({
   account
 });
-export default connect(mapStateToProps)(HeaderAvatar);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderAvatar);

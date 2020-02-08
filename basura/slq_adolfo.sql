@@ -31,6 +31,13 @@ CREATE TABLE `social_media`(
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB default character set utf8mb4;
 
+ CREATE TABLE `tags` (
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `name` varchar(60)  NOT NULL UNIQUE,
+  `times_used` int (11) NOT NULL
+) ENGINE=InnoDB default character set utf8mb4;
+
+
 /* ---------------------------------------------------------------------------------------------   */
 /* -----------------------------------------------TABLES ---------------------------------------   */
 CREATE TABLE `user` (
@@ -43,8 +50,8 @@ CREATE TABLE `user` (
   `country`   varchar(2),
   `state`   varchar(30),
   `id_social_media` int NULL,
-  `header`  varchar(255) default 'ico_logo.png' ,
-  `avatar` varchar(255) default 'ico_logo.png' ,
+  `header`  varchar(255) default NULL ,
+  `avatar` varchar(255) default NULL ,
   `features`  varchar(60) ,
   `cv_photo` text ,
   `cv_studies` text ,
@@ -78,7 +85,6 @@ CREATE TABLE `enterprise` (
   `active` tinyint(1) DEFAULT 1
   ) ENGINE=InnoDB default character set utf8mb4;
 
-/* TODO: preguntar davis diferencia entr proyect y portafolio. */
 /*project: trabajos de empresas */
 CREATE TABLE `project` (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -101,16 +107,16 @@ CREATE TABLE `portfolio` (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `id_project` int DEFAULT NULL,
   `id_user` int DEFAULT NULL,
+  `avatar` varchar(255) NULL,
   `title` varchar(60) NOT NULL,
   `description` varchar(200) ,
-  `id_style` int DEFAULT NULL,
+  `id_type` int DEFAULT 1,
   `likes` int(11) DEFAULT 0,
   `views` int(11) DEFAULT 0,
-  `tags` text CHARACTER SET utf8mb4,
   `publish` tinyint(1) DEFAULT NULL,
   `date`  date NOT NULL,
   `visible` tinyint(1) DEFAULT 1,
-  `active` tinyint(1) DEFAULT 1,
+  `active` tinyint(1) DEFAULT 0,
   FOREIGN KEY(id_user) REFERENCES user(id),
   FOREIGN KEY(id_project) REFERENCES project(id)
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
@@ -190,14 +196,14 @@ CREATE TABLE `user_profile`(
   PRIMARY KEY (id_user, id_profile)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `user_portfolio` (
-  `id_user` int(11) NOT NULL,
-  `id_portfolio` int(11) NOT NULL,
-  `request_status` enum('send','accepted','refused'),
-  FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
-  FOREIGN KEY(id_portfolio) REFERENCES portfolio(id)  ON DELETE CASCADE,
-  PRIMARY KEY (id_user, id_portfolio)
-) ENGINE=InnoDB;
+-- CREATE TABLE `user_portfolio` (
+--   `id_user` int(11) NOT NULL,
+--   `id_portfolio` int(11) NOT NULL,
+--   `portfolio_status` enum('doing','done'),
+--   FOREIGN KEY(id_user) REFERENCES user(id)  ON DELETE CASCADE,
+--   FOREIGN KEY(id_portfolio) REFERENCES portfolio(id)  ON DELETE CASCADE,
+--   PRIMARY KEY (id_user, id_portfolio)
+-- ) ENGINE=InnoDB;
 
 /*Colaboradores aquí*/
 CREATE TABLE `user_enterprise` (
@@ -295,10 +301,7 @@ CREATE TABLE `likes_user_project` (
   PRIMARY KEY (id_user, id_project)
 )ENGINE = InnoDB;
 
-
-
 /*claps*/
-
 CREATE TABLE `clap_user_files` (
   `id_user` int NOT NULL,
   `id_file` int NOT NULL,
@@ -307,3 +310,24 @@ CREATE TABLE `clap_user_files` (
   FOREIGN KEY (id_file) REFERENCES file(id),
   PRIMARY KEY (id_user, id_file)
 )ENGINE = InnoDB;
+
+/* TABLLAS NM DEL PORTFOLIO*/
+CREATE TABLE `portfolio_tags` (
+  `id_portfolio` int NOT NULL,
+  `id_tags` int NOT NULL,
+  `times_used` int(11),
+  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
+  FOREIGN KEY (id_tags) REFERENCES tags(id),
+  PRIMARY KEY (id_portfolio, id_tags)
+)ENGINE = InnoDB;
+/* 
+//No la necesito porque la relación es 1-N.
+// 1 portafolio tiene muchas imagenes.
+CREATE TABLE `portfolio_file` (
+  `id_portfolio` int NOT NULL,
+  `id_file` int NOT NULL,
+  FOREIGN KEY (id_portfolio) REFERENCES portfolio(id),
+  FOREIGN KEY (id_file) REFERENCES file(id),
+  PRIMARY KEY (id_portfolio, id_file)
+)ENGINE = InnoDB;
+*/

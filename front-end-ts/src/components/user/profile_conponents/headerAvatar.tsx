@@ -5,6 +5,7 @@ import { IAccount } from "src/interface/IAccount";
 import { connect } from "react-redux";
 import { myFetchFiles, myLocalStorage } from "src/utils";
 import { SetAccountAction } from "src/redux/actions";
+import { decode } from "jsonwebtoken";
 
 interface IProps {}
 interface IGlobalStateProps {
@@ -45,16 +46,17 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
 
       myFetchFiles({
         method: "PUT",
-        path: `/records/user/${this.props.account?.id}`,
+        path: `/records/user/${this.props.account?.id}/avatar`,
         formData
       }).then(json => {
         //TODO: sustituir
         if (json) {
           /* Actualizacion del token tras el update */
           let token = localStorage.getItem("coworkin_token");
-          // El token trae expire & value. Value es el token como tal.
-          // lo convierto en objeto y saco el value.
-          let newToken = token ? JSON.parse(token).value : null;
+          // El token trae expire & VALUE. VALUE es el token como tal.
+          // lo convierto en objeto y saco el VALUE.
+          // al VALUE <--! lo decodifico, porque es un token.
+          let newToken: any = token ? decode(JSON.parse(token).value) : null;
           // decodifico newToken en un objeto
           newToken.avatar = json.avatar;
           newToken.header = json.header;
@@ -77,7 +79,7 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
 
       myFetchFiles({
         method: "PUT",
-        path: `/records/header/${this.props.account?.id}`,
+        path: `/records/user/${this.props.account?.id}/header`,
         formData
       }).then(json => {
         //TODO: sustituir

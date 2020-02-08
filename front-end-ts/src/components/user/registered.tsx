@@ -34,7 +34,6 @@ class Registered extends React.PureComponent<TProps, IState> {
 
   render() {
     const { id, avatar, name } = this.props.account as IAccount;
-
     return (
       <ul
         className="navbar-nav mr-5 pr-4 "
@@ -57,7 +56,11 @@ class Registered extends React.PureComponent<TProps, IState> {
                       : `${LOCAL_URL}/images/ico_logo40x40.png` */}
             <img
               alt="User Visual Stuff"
-              src={`${API_URL}/multimedia/user_${id}/avatar/${avatar}`}
+              src={
+                avatar
+                  ? `${API_URL}/multimedia/user_${id}/avatar/${avatar}`
+                  : `${LOCAL_URL}/images/ico_logo40x40.png`
+              }
               id="mi_avatar"
               className="rounded-circle mt-1"
               style={{ float: "left", height: "5vh" }}
@@ -74,7 +77,7 @@ class Registered extends React.PureComponent<TProps, IState> {
               <i className="fas fa-user-edit"></i>My Profile
             </Link>
 
-            <Link to="/" className="dropdown-item">
+            <Link to="/user/portfolio" className="dropdown-item">
               <i className="far fa-id-card"></i>My Portfolio
             </Link>
             <div className="dropdown-divider"></div>

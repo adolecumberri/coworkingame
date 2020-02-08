@@ -7,7 +7,7 @@ interface IProps {
 }
 
 interface IState {
-  porfolioNumber: string;
+  portfolioNumber: string;
   userName: string;
 }
 
@@ -16,31 +16,15 @@ class Header extends React.PureComponent<IProps, IState> {
     super(props);
 
     this.state = {
-      porfolioNumber: "0",
+      portfolioNumber: "0",
       userName: "User.?"
     };
   }
 
-  componentDidMount() {
-    myFetch({
-      path: `/user_portfolio/user/${this.props.id_user}`,
-      method: "GET"
-    }).then(({ num }: { num: string }) => {
-      this.setState({ porfolioNumber: num });
-
-      myFetch({
-        path: `/user/name/${this.props.id_user}`,
-        method: "GET"
-      }).then((obj: any) => {
-        if (obj) {
-          this.setState({ userName: obj.name });
-        }
-      });
-    });
-  }
+  componentDidMount() {}
 
   render() {
-    let { porfolioNumber, userName } = this.state;
+    let { portfolioNumber, userName } = this.state;
     return (
       <div className="container-fluid px-0">
         <div
@@ -70,7 +54,7 @@ class Header extends React.PureComponent<IProps, IState> {
           }}
         >
           Proyects published by {userName} :{" "}
-          {porfolioNumber ? porfolioNumber : "0"}
+          {portfolioNumber ? portfolioNumber : "0"}
         </div>
       </div>
     );

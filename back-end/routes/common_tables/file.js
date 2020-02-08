@@ -1,16 +1,18 @@
-var { Router } = require("express");
+var {
+  Router
+} = require("express");
 var router = Router();
 
 const {
   showAll,
-  showById,
+  showByPorfolioId,
   insert,
   updateById,
   deleteById
 } = require("../../controllers/common_tables_controller/file");
 
 router.get("/", showAll);
-router.get("/:id", showById);
+router.get("/:id_portfolio", showByPorfolioId);
 router.post("/", insert);
 router.put("/:id", updateById);
 router.delete("/:id", deleteById);

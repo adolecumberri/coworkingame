@@ -34,7 +34,6 @@ let file = require("./routes/common_tables/file");
 /*--------------------> Tablas NM */
 // let user_social_media = require("./routes/nm_tables/user_social_media");
 let user_profile = require("./routes/nm_tables/user_profile");
-let user_portfolio = require("./routes/nm_tables/user_portfolio");
 // let user_enterprise = require("./routes/nm_tables/user_enterprise");
 // let user_project = require("./routes/nm_tables/user_project");
 // let enterprise_social_media = require("./routes/nm_tables/enterprise_social_media");
@@ -64,7 +63,6 @@ app.use("/file", file);
 /*--> Tablas NM */
 // app.use("/user_social_media", user_social_media);
 app.use("/user_profile", user_profile);
-app.use("/user_portfolio", user_portfolio);
 // app.use("/user_enterprise", user_enterprise);
 // app.use("/user_project", user_project);
 // app.use("/enterprise_social_media", enterprise_social_media);

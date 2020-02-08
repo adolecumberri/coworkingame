@@ -1,6 +1,7 @@
 import { API_URL } from "./constants";
 import { IAccount } from "./interface/IAccount";
 import { ITokenPayload } from "./interface/ITokenPayload";
+import { decode } from "jsonwebtoken";
 
 export const myFetch = async ({
   method = "GET",
@@ -83,11 +84,21 @@ export const myLocalStorage = (key: string, value: string) => {
 
 
 export const generateAccountFromToken = (token: ITokenPayload | string): IAccount => {
-  const { id, name, header, avatar, isAdmin } = token as ITokenPayload;
-  token = JSON.stringify(token)
 
-  return { token, id, name, header, avatar, isAdmin };
+  /* El token puede venir como string o como ITokenPayload
+  porque programo como un simio. 
+  TODO: unificar entradas O! crear 2 funciones. */
+  if(typeof token == "string"){
+    const { id, name, header, avatar, isAdmin } = decode(token) as ITokenPayload;
+    return { token, id, name, header, avatar, isAdmin } 
+  }else{
+    const { id, name, header, avatar, isAdmin } = token as ITokenPayload;
+    return { token: (token as unknown as string), id, name, header, avatar, isAdmin };
+  }
+ 
 };
+
+
 
 export const updateToken = (obj:
   {

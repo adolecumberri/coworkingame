@@ -1,0 +1,44 @@
+import React from "react";
+import { API_URL } from "src/constants";
+import { Link } from "react-router-dom";
+
+interface IProps {
+  avatar: string;
+  name: string;
+  id_user: string;
+  id_portfolio: string;
+}
+
+class UserInfo extends React.PureComponent<IProps> {
+  constructor(props: IProps) {
+    super(props);
+  }
+  render() {
+    const { avatar, name, id_user, id_portfolio } = this.props;
+    return (
+      <>
+        <div className="container">
+          <div className=" mb-2 mt-5">
+            <div className=" m-0 pt-2 ml-2">
+              <Link to="/">
+                <div className="text-center">
+                  <img
+                    alt="User Image"
+                    src={`${API_URL}/multimedia/user_${id_user}/avatar/${avatar}`}
+                    className="logo rounded"
+                    style={{ width: "80px" }}
+                  />
+                  <br />
+                  <span className="info-user-name"> {name}</span>
+                  <br />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+}
+
+export default UserInfo;

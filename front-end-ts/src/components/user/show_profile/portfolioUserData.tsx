@@ -4,16 +4,16 @@ import { IUser } from "src/interface/IUser";
 
 /* JSON de ciudades. */
 import countries from "src/jsons/cities.json";
-import { IPorfolioUser } from "src/interface/IProfile";
+import { IportfolioUser } from "src/interface/IProfile";
 
 interface IProps {
   user: IUser | null;
 }
 interface IState {
-  user_profile: IPorfolioUser | undefined;
+  user_profile: IportfolioUser | undefined;
 }
 
-class PorfolioUserData extends React.PureComponent<IProps, IState> {
+class PortfolioUserData extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -102,4 +102,4 @@ class PorfolioUserData extends React.PureComponent<IProps, IState> {
   }
 }
 
-export default PorfolioUserData;
+export default PortfolioUserData;

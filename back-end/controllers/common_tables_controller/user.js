@@ -105,7 +105,7 @@ controller.login = ({
     (err, result) => {
       if (err) res.sendStatus(400);
       console.log(result);
-      if (result) {
+      if (result.length != 0) {
         const token = createUserToken({
           id: result[0].id,
           name: result[0].name,
@@ -213,7 +213,7 @@ const createDirs = (id) => {
     fs.mkdirSync(dir + "/avatar");
     fs.mkdirSync(dir + "/header");
     fs.mkdirSync(dir + "/thumb");
-    fs.mkdirSync(dir + "/porfolio");
+    fs.mkdirSync(dir + "/portfolios");
 
   }
 

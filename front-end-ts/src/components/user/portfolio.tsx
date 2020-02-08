@@ -1,9 +1,9 @@
 import React from "react";
 
-/* Componentes del porfolio */
-import PorfolioUserData from "./porfolio/porfolioUserData";
-import Header from "./porfolio/header";
-import PorfolioData from "./porfolio/porfolioData";
+/* Componentes del portfolio */
+import PortfolioUserData from "./show_profile/portfolioUserData";
+import Header from "./show_profile/header";
+import PortfolioData from "./show_profile/portfolioData";
 import { myFetch } from "src/utils";
 import { IUser } from "src/interface/IUser";
 import { RouteComponentProps } from "react-router-dom";
@@ -21,7 +21,7 @@ interface IState {
   numProjects: number;
 }
 
-class Porfolio extends React.PureComponent<IProps, IState> {
+class portfolio extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -31,20 +31,7 @@ class Porfolio extends React.PureComponent<IProps, IState> {
     this.setNumProjects = this.setNumProjects.bind(this);
   }
 
-  componentDidMount() {
-    /* this.props.match.params.id saca la ID de la URL*/
-
-    setTimeout(() => {
-      myFetch({
-        path: `/user/${this.props.match.params.id}`,
-        method: "GET"
-      }).then(json => {
-        this.setState({ user: { ...json[0] } });
-
-        /* cargo los profiles del usuario */
-      });
-    }, 1);
-  }
+  componentDidMount() {}
 
   setNumProjects(number: number) {
     this.setState({ numProjects: number });
@@ -58,10 +45,12 @@ class Porfolio extends React.PureComponent<IProps, IState> {
         <div className="container-fluid px-0">
           <div className="row">
             <div className="col-9">
-              <PorfolioData id_user={(id as unknown) as number}></PorfolioData>
+              <PortfolioData
+                id_user={(id as unknown) as number}
+              ></PortfolioData>
             </div>
             <div className="col-3">
-              <PorfolioUserData user={this.state.user}></PorfolioUserData>
+              <PortfolioUserData user={this.state.user}></PortfolioUserData>
             </div>
           </div>
         </div>
@@ -75,6 +64,6 @@ class Porfolio extends React.PureComponent<IProps, IState> {
 //   account
 // });
 
-// export default connect(mapStateToProps)(Porfolio);
+// export default connect(mapStateToProps)(portfolio);
 
-export default Porfolio;
+export default portfolio;

@@ -11,8 +11,8 @@ export interface IProfileUser{
   category: string
 }
 
-/* interfaz de la pestaña de porfolio de cada usuario */
-export interface IPorfolioUser{
+/* interfaz de la pestaña de portfolio de cada usuario */
+export interface IportfolioUser{
   categories : { category : string}[],
   result: { 
     id: number, 

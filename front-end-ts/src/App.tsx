@@ -21,12 +21,17 @@ import contact_us from "./components/contact_us/index_contact_us";
 import NavbarLogged from "./components/navbarLogged";
 import NavbarUnlogged from "./components/navbarUnlogged";
 
-/*  User Section */
+/* User Section */
 import Profile from "./components/user/profile";
+
+/*  porfolio Section */
+import ShowPortfolio from "./components/user/portfolio/show_portfolio/index";
+import portfolio from "./components/user/portfolio";
+import PortfolioPanel from "./components/user/portfolio/create_portfolio/portfolioPanel";
 
 /* Admin Stuff */
 import UserAdmin from "./components/admin/userAdmin";
-import Porfolio from "./components/user/porfolio";
+import NewPortfolio from "./components/user/portfolio/create_portfolio/newPortfolio";
 
 interface IGlobalStateProps {
   account: IAccount | null;
@@ -63,8 +68,19 @@ class App extends React.PureComponent<TProps> {
             <Route path="/enterprises" exact component={enterprises} />
             <Route path="/explore" exact component={explore} />
             <Route path="/admin/user" component={UserAdmin} />
+            <Route path="/portfolio/:id_portfolio" component={ShowPortfolio} />
+            {/* No uso el link de arriba todavía */}
+
+            {/* <Route path="/portfolio/:id" component={portfolio} />
+             */}
+            <Route
+              path="/user/portfolio/newPortfolio"
+              component={NewPortfolio}
+            />
+            <Route path="/user/portfolio">
+              <PortfolioPanel id_user={account?.id}></PortfolioPanel>
+            </Route>
             <Route path="/user/profile" component={Profile} />
-            <Route path="/dev/porfolio/:id" component={Porfolio} />
           </Switch>
         </BrowserRouter>
       </div>

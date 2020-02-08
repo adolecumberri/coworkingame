@@ -5,16 +5,16 @@ var router = Router();
 
 const {
   showAll,
-  showById,
+  showByUserId,
   insert,
-  updateById,
+  showHeader,
   deleteById
 } = require("../../controllers/common_tables_controller/portfolio");
 
 router.get("/", showAll);
-router.get("/:id", showById);
+router.get("/user/:id_user", showByUserId);
 router.post("/", insert);
-router.put("/:id", updateById);
+router.post("/header/:id_portfolio", showHeader);
 router.delete("/:id", deleteById);
 
 

@@ -27,10 +27,11 @@ controller.uploadUserAvatar = (req, res) => {
   );
   connection.query(sqlUpdateFile, (err, result) => {
     if (err) res.sendStatus(400);
-    connection.query(`SELECT avatar, header FROM user WHERE id = ${req.params.id}`, (err, resultIMGs) => {
-      if (err) res.sendStatus(400);
-      res.send(resultIMGs[0]);
-    })
+    connection.query(`SELECT avatar, header FROM user WHERE id = ${req.params.id}`,
+      (err, resultIMGs) => {
+        if (err) res.sendStatus(400);
+        res.send(resultIMGs[0]);
+      })
   });
 };
 
@@ -56,10 +57,11 @@ controller.uploadUserHeader = (req, res) => {
 
   connection.query(sqlUpdateFile, (err, result) => {
     if (err) res.sendStatus(400);
-    connection.query(`SELECT avatar, header FROM user WHERE id = ${req.params.id}`, (err, resultIMGs) => {
-      if (err) res.sendStatus(400);
-      res.send(resultIMGs[0]);
-    })
+    connection.query(`SELECT avatar, header FROM user WHERE id = ${req.params.id}`,
+      (err, resultIMGs) => {
+        if (err) res.sendStatus(400);
+        res.send(resultIMGs[0]);
+      })
   });
 
 

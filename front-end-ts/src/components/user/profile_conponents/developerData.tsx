@@ -143,17 +143,6 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
     if (value.length >= 3) {
       if (name === "name") {
         obj = { name: value };
-        //TODO: cambiar por funcion de actualizar TOKEN/REDUX
-        /* ACTUALIZACION DE REDUX Y EL TOKEN */
-        /* Actualizacion del token tras el update */
-        let token = localStorage.getItem("coworkin_token");
-        // El token trae expire & value. Value es el token como tal.
-        // lo convierto en objeto y saco el value.
-        let newToken = token ? JSON.parse(token).value : null;
-        // decodifico newToken en un objeto
-        newToken.name = value;
-        myLocalStorage("coworkin_token", newToken);
-        this.props.setAccount(newToken);
       } else {
         obj = { state: value };
       }
@@ -168,6 +157,17 @@ class DeveloperData extends React.PureComponent<TProps, IState> {
           this.setState({ error_name: true });
         } else {
           this.setState({ error_name: false });
+          //TODO: cambiar por funcion de actualizar TOKEN/REDUX
+          /* ACTUALIZACION DE REDUX Y EL TOKEN */
+          /* Actualizacion del token tras el update */
+          let token = localStorage.getItem("coworkin_token");
+          // El token trae expire & value. Value es el token como tal.
+          // lo convierto en objeto y saco el value.
+          let newToken = token ? JSON.parse(token).value : null;
+          // decodifico newToken en un objeto
+          newToken.name = value;
+          myLocalStorage("coworkin_token", newToken);
+          this.props.setAccount(newToken);
         }
       });
     }

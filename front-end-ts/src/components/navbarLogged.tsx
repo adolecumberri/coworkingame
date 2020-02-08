@@ -24,48 +24,45 @@ class NavbarLogged extends React.PureComponent<TProps> {
     return (
       <>
         <div className="container-fluid " style={{ padding: "0px" }}>
+          <div className="col-12" style={{ margin: "0px", padding: "0px" }}>
+            <nav className="navbar navbar-expand navbar-light bg-light ">
+              <a className="navbar-brand ml-4" href="/">
+                <img
+                  src={LOCAL_URL + "/images/ico_logo40x40.png"}
+                  width="40px"
+                  height="40px"
+                  alt=""
+                />
+                Coworkingame
+              </a>
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#main_navbar"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
 
-            <div className="col-12" style={{ margin: "0px", padding: "0px" }}>
-              <nav className="navbar navbar-expand navbar-light bg-light ">
-                <a className="navbar-brand ml-4" href="/">
-                  <img
-                    src={LOCAL_URL + "/images/ico_logo40x40.png"}
-                    width="40px"
-                    height="40px"
-                    alt=""
-                  />
-                </a>
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#main_navbar"
-                  aria-label="Toggle navigation"
-                >
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-
-                <div
-                  className="collapse navbar-collapse"
-                  id="main_navbar"
-                >
-                  <ul className="navbar-nav mr-auto mx-auto">
-                    <li className="nav-item active">
-                      <Link to="/main" className="nav-link">
-                        MAIN
-                      </Link>
-                    </li>
-                    <li className="nav-item active">
-                      <Link to="/explore" className="nav-link">
-                        EXPLORE
-                      </Link>
-                    </li>
-                    <li className="nav-item active">
-                      <Link to="/developers" className="nav-link">
-                        DEVELOPERS
-                      </Link>
-                    </li>
-                    {/* <li className="nav-item active">
+              <div className="collapse navbar-collapse" id="main_navbar">
+                <ul className="navbar-nav mr-auto mx-auto">
+                  <li className="nav-item active">
+                    <Link to="/main" className="nav-link">
+                      MAIN
+                    </Link>
+                  </li>
+                  <li className="nav-item active">
+                    <Link to="/explore" className="nav-link">
+                      EXPLORE
+                    </Link>
+                  </li>
+                  <li className="nav-item active">
+                    <Link to="/developers" className="nav-link">
+                      DEVELOPERS
+                    </Link>
+                  </li>
+                  {/* <li className="nav-item active">
                       <Link to="/enterprises" className="nav-link">
                         ENTERPRISES
                       </Link>
@@ -75,20 +72,19 @@ class NavbarLogged extends React.PureComponent<TProps> {
                         CONTACT US
                       </Link>
                     </li> */}
-                    {isAdmin ? (
-                      <li className="nav-item active mt-n2">
-                        <AdminButtons />
-                      </li>
-                    ) : (
-                      ""
-                    )}
-                  </ul>
-                  <Registered />
-                </div>
-              </nav>
-            </div>
+                  {isAdmin ? (
+                    <li className="nav-item active mt-n2">
+                      <AdminButtons />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+                </ul>
+                <Registered />
+              </div>
+            </nav>
           </div>
-      
+        </div>
       </>
     );
   }

@@ -25,32 +25,33 @@ class Navbar extends React.PureComponent<IProps, IState> {
   }
 
   loginActivation() {
-    const {loginFlag} = this.state;
-    this.setState( { loginFlag : !loginFlag, registerFlag: false});
+    const { loginFlag } = this.state;
+    this.setState({ loginFlag: !loginFlag, registerFlag: false });
   }
   registerActivation() {
-    const {registerFlag} = this.state;
-    this.setState( { registerFlag : !registerFlag, loginFlag: false});
+    const { registerFlag } = this.state;
+    this.setState({ registerFlag: !registerFlag, loginFlag: false });
   }
-    navbarClicked(){
-    this.setState({loginFlag: false, registerFlag: false});
+  navbarClicked() {
+    this.setState({ loginFlag: false, registerFlag: false });
   }
 
   render() {
     const { loginFlag, registerFlag } = this.state;
     return (
       <>
-        <div className="container-fluid" style = {{margin: "0px"}}>
+        <div className="container-fluid" style={{ margin: "0px" }}>
           <div className="row">
             <div className="col-12">
               <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <a className="navbar-brand" href="/">
                   <img
-                    src={LOCAL_URL+"/images/ico_logo40x40.png"}
+                    src={LOCAL_URL + "/images/ico_logo40x40.png"}
                     width="40px"
                     height="40px"
                     alt=""
                   />
+                  Coworkingame
                 </a>
                 <button
                   className="navbar-toggler"
@@ -70,17 +71,29 @@ class Navbar extends React.PureComponent<IProps, IState> {
                 >
                   <ul className="navbar-nav mr-auto mx-auto">
                     <li className="nav-item active">
-                      <Link to="/main" className="nav-link" onClick={this.navbarClicked}>
+                      <Link
+                        to="/main"
+                        className="nav-link"
+                        onClick={this.navbarClicked}
+                      >
                         MAIN
                       </Link>
                     </li>
                     <li className="nav-item active">
-                      <Link to="/explore" className="nav-link" onClick={this.navbarClicked}>
+                      <Link
+                        to="/explore"
+                        className="nav-link"
+                        onClick={this.navbarClicked}
+                      >
                         EXPLORE
                       </Link>
                     </li>
                     <li className="nav-item active">
-                      <Link to="/developers" className="nav-link" onClick={this.navbarClicked}>
+                      <Link
+                        to="/developers"
+                        className="nav-link"
+                        onClick={this.navbarClicked}
+                      >
                         DEVELOPERS
                       </Link>
                     </li>
@@ -99,9 +112,9 @@ class Navbar extends React.PureComponent<IProps, IState> {
                     <li>
                       <button
                         type="button"
-                        className="btn btn-primary mr-3"
+                        className="btn btn-danger mr-3"
                         data-toggle="modal"
-                        onClick = {this.loginActivation}
+                        onClick={this.loginActivation}
                       >
                         Login
                       </button>
@@ -109,9 +122,9 @@ class Navbar extends React.PureComponent<IProps, IState> {
                     <li>
                       <button
                         type="button"
-                        className="btn btn-primary"
+                        className="btn btn-danger"
                         data-toggle="modal"
-                        onClick = {this.registerActivation}
+                        onClick={this.registerActivation}
                       >
                         Register
                       </button>
@@ -123,7 +136,7 @@ class Navbar extends React.PureComponent<IProps, IState> {
           </div>
         </div>
         {loginFlag && <Login />}
-        {registerFlag && <Register registered={this.navbarClicked}/>}
+        {registerFlag && <Register registered={this.navbarClicked} />}
       </>
     );
   }

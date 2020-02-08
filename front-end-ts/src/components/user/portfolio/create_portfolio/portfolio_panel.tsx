@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Route } from "react-router-dom";
 import { myFetch } from "src/utils";
 import { IPortfolioCard } from "src/interface/IPorfolio";
-import PortfolioCard from "../cards/portfolioPanelCard";
+import PortfolioCard from "../cards/portfolio_panel_card";
 
 interface IProps {
   id_user: number | undefined;

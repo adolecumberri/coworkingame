@@ -11,9 +11,10 @@ const {
   deleteById,
   login,
   getDevInfo,
-  checkPassword,
+  getUserByPortfolioId,
   getImages,
-  getNameById
+  getNameById,
+  checkPassword
 } = require("../../controllers/common_tables_controller/user");
 
 router.get("/", showAll);
@@ -25,6 +26,7 @@ router.post("/login", login);
 router.post("/dev_info", getDevInfo);
 router.post("/img/:id", getImages)
 router.post("/check_password", checkPassword);
+// router.post("/portfolio/:id_portfolio", getUserByPortfolioId);
 
 router.put("/:id", updateById);
 

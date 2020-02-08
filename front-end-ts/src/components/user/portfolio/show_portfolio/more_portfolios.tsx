@@ -1,7 +1,7 @@
 import React from "react";
 import { myFetch } from "src/utils";
 import { IPortfolioCard } from "src/interface/IPorfolio";
-import MorePortfolioCard from "../cards/morePorfoliosCard";
+import MorePortfolioCard from "../cards/more_porfolios_card";
 
 interface IProps {
   id_user: string;

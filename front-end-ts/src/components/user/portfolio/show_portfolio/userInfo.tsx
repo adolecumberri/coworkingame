@@ -20,7 +20,7 @@ class UserInfo extends React.PureComponent<IProps> {
         <div className="container">
           <div className=" mb-2 mt-5">
             <div className=" m-0 pt-2 ml-2">
-              <Link to="/">
+              <Link to={`/content_creator/${id_user}`}>
                 <div className="text-center">
                   <img
                     alt="User Image"

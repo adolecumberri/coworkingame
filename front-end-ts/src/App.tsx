@@ -22,16 +22,16 @@ import NavbarLogged from "./components/navbarLogged";
 import NavbarUnlogged from "./components/navbarUnlogged";
 
 /* User Section */
-import Profile from "./components/user/profile";
+import UserUpdate from "./components/user/update_user_index";
 
 /*  porfolio Section */
 import ShowPortfolio from "./components/user/portfolio/show_portfolio/index";
-import portfolio from "./components/user/portfolio";
-import PortfolioPanel from "./components/user/portfolio/create_portfolio/portfolioPanel";
+import UserProfile from "./components/user/user_profile_index";
+import PortfolioPanel from "./components/user/portfolio/create_portfolio/portfolio_panel";
 
 /* Admin Stuff */
 import UserAdmin from "./components/admin/userAdmin";
-import NewPortfolio from "./components/user/portfolio/create_portfolio/newPortfolio";
+import NewPortfolio from "./components/user/portfolio/create_portfolio/new_portfolio";
 
 interface IGlobalStateProps {
   account: IAccount | null;
@@ -55,6 +55,8 @@ class App extends React.PureComponent<TProps> {
 
   render() {
     const { account } = this.props;
+    console.log("Account content: ");
+    console.log(account);
     return (
       <div className="app">
         <BrowserRouter>
@@ -69,18 +71,18 @@ class App extends React.PureComponent<TProps> {
             <Route path="/explore" exact component={explore} />
             <Route path="/admin/user" component={UserAdmin} />
             <Route path="/portfolio/:id_portfolio" component={ShowPortfolio} />
-            {/* No uso el link de arriba todavía */}
-
-            {/* <Route path="/portfolio/:id" component={portfolio} />
-             */}
+            <Route path="/content_creator/:id">
+              <UserProfile />
+            </Route>
+            <Route exact path="/user/portfolio">
+              <PortfolioPanel id_user={account?.id}></PortfolioPanel>
+            </Route>
             <Route
               path="/user/portfolio/newPortfolio"
               component={NewPortfolio}
             />
-            <Route path="/user/portfolio">
-              <PortfolioPanel id_user={account?.id}></PortfolioPanel>
-            </Route>
-            <Route path="/user/profile" component={Profile} />
+
+            <Route path="/user/profile" component={UserUpdate} />
           </Switch>
         </BrowserRouter>
       </div>

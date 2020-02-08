@@ -2,7 +2,7 @@ import React from "react";
 import HeaderP from "./header";
 import BodyP from "./body";
 import UserInfo from "./userInfo";
-import MoreP from "./morePortfolios";
+import MoreP from "./more_portfolios";
 import { IStore } from "src/interface/IStore";
 import { connect } from "react-redux";
 import { IAccount } from "src/interface/IAccount";

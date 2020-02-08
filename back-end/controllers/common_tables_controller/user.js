@@ -22,7 +22,7 @@ controller.showById = ({
 }, res) => {
   connection.query(bbdd.showById("user", id), (err, result) => {
     if (err) throw err;
-    res.send(result);
+    res.send(result[0]);
   });
 };
 
@@ -179,6 +179,26 @@ controller.getNameById = ({
       if (err) throw err;
       res.send(result[0]);
     })
+}
+
+/*NOT NECESARY */
+controller.getUserByPortfolioId = ({
+  params: {
+    id_portfolio
+  }
+}, res) => {
+
+  let sql = `SELECT user.header, user.avatar, user.name from user` +
+    ` where user.id = (select id_user from portfolio where id = ${id_portfolio})`
+  console.log(sql);
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log("El RESULT: ");
+    console.log(result[0])
+    res.send(result[0]);
+  });
+
+
 }
 
 controller.checkPassword = (req, res) => {

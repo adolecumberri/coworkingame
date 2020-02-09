@@ -15,7 +15,6 @@ class BodyP extends React.PureComponent<IProps> {
   componentDidMount() {}
 
   render() {
-    console.log("Render ??");
     const id_user = this.props.id_user;
     const { name, id_portfolio } = this.props.portfolio_file;
 

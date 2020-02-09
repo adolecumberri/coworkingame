@@ -9,5 +9,9 @@ export interface IPortfolioCard {
     active : number
   }
 
+  export interface IPortfolioCard_creator{
+    id: number,
+    avatar: string
+  }
 
   

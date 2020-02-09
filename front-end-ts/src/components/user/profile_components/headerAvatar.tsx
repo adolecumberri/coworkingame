@@ -88,12 +88,29 @@ class HeaderAvatar extends React.PureComponent<TProps, IState> {
           let token = localStorage.getItem("coworkin_token");
           // El token trae expire & value. Value es el token como tal.
           // lo convierto en objeto y saco el value.
-          let newToken = token ? JSON.parse(token).value : null;
-          // decodifico newToken en un objeto
-          newToken.avatar = json.avatar;
-          newToken.header = json.header;
-          myLocalStorage("coworkin_token", newToken);
-          this.props.setAccount(newToken);
+
+          //TODO:
+          /* PARCHE porque NEW TOKEN ES STRING A VECES!!!!! */
+          if (typeof JSON.parse(token as string).value === "string") {
+            let newToken = token ? JSON.parse(token).value : null;
+            // decodifico newToken en un objeto
+
+            newToken = decode(newToken);
+            newToken.avatar = json.avatar;
+            newToken.header = json.header;
+            myLocalStorage("coworkin_token", newToken);
+            this.props.setAccount(newToken);
+
+            /* ESTE CODIGO ES OPTIMIZABLE */
+          } else {
+            let newToken = token ? JSON.parse(token).value : null;
+            // decodifico newToken en un objeto
+
+            newToken.avatar = json.avatar;
+            newToken.header = json.header;
+            myLocalStorage("coworkin_token", newToken);
+            this.props.setAccount(newToken);
+          }
 
           //Estado para que se actualice el componente
           this.setState({ update: !this.state.update });

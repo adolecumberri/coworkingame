@@ -107,10 +107,10 @@ controller.showHeader = ({
 /* NOT USED NOT TESTED */
 controller.countPorfoliosFromUser = ({
   params: {
-    id
+    id_user
   }
 }, res) => {
-  let sql = `SELECT count(id_portfolio) as num FROM user_portfolio where id_user = ${id};`
+  let sql = `SELECT count(id) as num FROM portfolio where id_user = ${id_user};`
   connection.query(
     sql,
     (err, result) => {

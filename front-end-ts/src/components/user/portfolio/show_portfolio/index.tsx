@@ -112,10 +112,7 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
       description,
       avatar
     } = this.state.portfolioHeader;
-    console.log("id Portfolio???");
-    console.log(id_portfolio);
-    console.log("En el render de index, saco id_portfolio: " + id_portfolio);
-    console.log(portfolio_file);
+
     return (
       <div className="container-fluid">
         <div className="row">

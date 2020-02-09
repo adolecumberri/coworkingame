@@ -8,13 +8,16 @@ const {
   showByUserId,
   insert,
   showHeader,
-  deleteById
+  deleteById,
+  countPorfoliosFromUser
 } = require("../../controllers/common_tables_controller/portfolio");
 
 router.get("/", showAll);
 router.get("/user/:id_user", showByUserId);
 router.post("/", insert);
 router.post("/header/:id_portfolio", showHeader);
+router.post("/count/:id_user", countPorfoliosFromUser);
+
 router.delete("/:id", deleteById);
 
 

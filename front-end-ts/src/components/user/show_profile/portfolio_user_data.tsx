@@ -5,55 +5,45 @@ import { IUser } from "src/interface/IUser";
 /* JSON de ciudades. */
 import countries from "src/jsons/cities.json";
 import { IportfolioUser } from "src/interface/IProfile";
+import { IPortfolioCard } from "src/interface/IPorfolio";
 
 interface IProps {
   user: IUser | null;
-}
-interface IState {
+
   user_profile: IportfolioUser | undefined;
 }
 
-class PortfolioUserData extends React.PureComponent<IProps, IState> {
+class PortfolioUserData extends React.PureComponent<IProps> {
   constructor(props: IProps) {
     super(props);
-    this.state = {
-      user_profile: undefined
-    };
   }
 
   render() {
-    let userData: IUser = { ...this?.props?.user };
-    const { active } = userData;
-    const categories = this.state.user_profile?.categories;
-    const result = this.state.user_profile?.result;
-    //mientra no cargue, sigo pidiendo los perfiles del usuario
-    if (this.state.user_profile === undefined) {
-      setTimeout(() => {
-        myFetch({
-          path: `/profile/user/${userData.id}`,
-          method: "POST"
-        }).then(profiles => {
-          profiles
-            ? this.setState({ user_profile: { ...profiles } })
-            : console.log("sin profiles");
-        });
-      }, 100);
-    }
-    // const {} = this.props.user;
+    let userData: any = { ...this?.props?.user };
+    const { active, age, gender, country } = userData;
+    const categories = this.props.user_profile?.categories;
+    const result = this.props.user_profile?.result;
+    console.log(categories?.length !== 0);
+    console.log(age);
+    console.log(gender);
+    console.log(country);
+
     return active ? (
       <div>
-        <div className="card-header p-0">Information</div>
-        {userData.age ? (
-          <div className="">{userData.age?.substring(0, 4)}</div>
+        {age || gender || country ? (
+          <div className="card-header p-0" key="10001">
+            Information
+          </div>
         ) : (
           ""
         )}
-        {userData.gender ? <div className="">{userData.gender}</div> : ""}
-        {userData?.country ? (
+        {age ? <div className="">{age?.substring(0, 4)}</div> : ""}
+        {gender ? <div className="">{gender}</div> : ""}
+        {country ? (
           <div className="">
             {
               countries.find(e => {
-                if (e.code === userData?.country) return true;
+                if (e.code === country) return true;
               })?.name
             }
           </div>
@@ -61,10 +51,14 @@ class PortfolioUserData extends React.PureComponent<IProps, IState> {
           ""
         )}
 
-        {this.state.user_profile ? (
+        {this.props.user_profile ? (
           <div>
-            <div className="card-header p-0">Knowledge</div>
-            {result?.map((row, index) => {
+            {categories?.length !== 0 ? (
+              <div className="card-header p-0 mt-5">Knowledge</div>
+            ) : (
+              ""
+            )}
+            {result?.map((row: any, index: number) => {
               return row.category === null ? (
                 <div key={index}>{`${row.name}`}</div>
               ) : (
@@ -75,13 +69,13 @@ class PortfolioUserData extends React.PureComponent<IProps, IState> {
               {categories?.map((categ, index) => {
                 return (
                   <>
-                    <div key={index} className="ml-3">
+                    <div key={index + "01"} className="ml-3">
                       {categ.category}
                     </div>
-                    <div>
+                    <div key={index + "02"}>
                       {result?.map((row, index) => {
                         return row.category === categ.category ? (
-                          <div key={index}>{`${row.name}`}</div>
+                          <div key={index + "03"}>{`${row.name}`}</div>
                         ) : (
                           ""
                         );
@@ -97,7 +91,7 @@ class PortfolioUserData extends React.PureComponent<IProps, IState> {
         )}
       </div>
     ) : (
-      <div>This user is not active</div>
+      <div key={10001}>This user is not active</div>
     );
   }
 }

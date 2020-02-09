@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { IStore } from "src/interface/IStore";
 import { myFetchFiles } from "src/utils";
 
+/* React router dom */
+
 interface IProps {
   history: any;
 }
@@ -127,7 +129,7 @@ class NewPortfolio extends React.PureComponent<TProps, IState> {
           formData: formData2
         }).then(json => {
           if (json?.response) {
-            this.props.history.push(`${LOCAL_URL}/user/portfolio`);
+            this.props.history.push("/user/portfolio"); // Redireccion SIN ${LOCAL_URL}
           }
         });
       });

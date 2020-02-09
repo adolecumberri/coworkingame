@@ -1,8 +1,8 @@
 import React from "react";
-import HeaderAvatar from "./profile_conponents/headerAvatar";
-import DeveloperData from "./profile_conponents/developerData";
-import Categories from "./profile_conponents/categories";
-import ChangePassword from "./profile_conponents/changePassword";
+import HeaderAvatar from "./profile_components/headerAvatar";
+import DeveloperData from "./profile_components/developerData";
+import Categories from "./profile_components/categories";
+import ChangePassword from "./profile_components/changePassword";
 import { Route, Link } from "react-router-dom";
 
 /* JSON de ciudades. */

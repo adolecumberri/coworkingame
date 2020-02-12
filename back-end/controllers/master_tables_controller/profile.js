@@ -17,11 +17,7 @@ controller.showAll = (_, res) => {
             //saco las categorias (solo las categorias)
             let sql = "select * from profile where category is not null order by category asc, name asc";
             connection.query(sql, (err, catNotNulls) => {
-              console.log({
-                categories,
-                catNulls,
-                catNotNulls
-              });
+
               res.send({
                 categories,
                 catNulls,
@@ -77,7 +73,7 @@ controller.deleteById = ({
 
 controller.showUserPorfolio = (req, res) => {
 
-  console.log(req.params);
+
 
   let sql = `select profile.* 
     from profile 

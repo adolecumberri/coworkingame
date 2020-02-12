@@ -1,5 +1,5 @@
 import React from "react";
-import { API_URL } from "src/constants";
+import { API_URL, LOCAL_URL } from "src/constants";
 import { Link } from "react-router-dom";
 
 interface IProps {
@@ -24,12 +24,19 @@ class UserInfo extends React.PureComponent<IProps> {
                 <div className="text-center">
                   <img
                     alt="User Image"
-                    src={`${API_URL}/multimedia/user_${id_user}/avatar/${avatar}`}
+                    src={
+                      avatar
+                        ? `${API_URL}/multimedia/user_${id_user}/avatar/${avatar}`
+                        : `${LOCAL_URL}/images/ico_logo40x40.png`
+                    }
                     className="logo rounded"
                     style={{ width: "80px" }}
                   />
                   <br />
-                  <span className="info-user-name"> {name}</span>
+                  <span className="info-user-name text-capitalize">
+                    {" "}
+                    {name}
+                  </span>
                   <br />
                 </div>
               </Link>

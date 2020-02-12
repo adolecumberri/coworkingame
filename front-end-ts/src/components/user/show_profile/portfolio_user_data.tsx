@@ -23,10 +23,6 @@ class PortfolioUserData extends React.PureComponent<IProps> {
     const { active, age, gender, country } = userData;
     const categories = this.props.user_profile?.categories;
     const result = this.props.user_profile?.result;
-    console.log(categories?.length !== 0);
-    console.log(age);
-    console.log(gender);
-    console.log(country);
 
     return active ? (
       <div>

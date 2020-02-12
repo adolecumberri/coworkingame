@@ -65,7 +65,7 @@ class Registered extends React.PureComponent<TProps, IState> {
               className="rounded-circle mt-1"
               style={{ float: "left", height: "5vh" }}
             />
-            <div className="float-left ml-3 mr-2 pt-2">
+            <div className="float-left ml-3 mr-2 pt-2 text-capitalize">
               {name} <i className="fa fa-caret-down" aria-hidden="true"></i>
             </div>
           </a>

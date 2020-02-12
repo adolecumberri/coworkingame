@@ -55,8 +55,6 @@ class App extends React.PureComponent<TProps> {
 
   render() {
     const { account } = this.props;
-    console.log("Account content: ");
-    console.log(account);
     return (
       <div className="app">
         <BrowserRouter>

@@ -13,6 +13,28 @@ controller.showAll = (_, res) => {
   });
 };
 
+controller.showRandomAll = (_, res) => {
+  let sql = `
+  select 
+  user.id as id_user, 
+  portfolio.id as id_portfolio, 
+  portfolio.avatar as avatar, 
+  portfolio.likes as likes, 
+  portfolio.views as views,
+  file.name as header
+  from portfolio  
+  inner join file
+  on portfolio.id = file.id_portfolio
+  inner join user
+  on portfolio.id_user = user.id
+  order by RAND();`;
+  console.log(sql);
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+};
+
 
 controller.showByUserId = ({
   params: {
@@ -36,6 +58,7 @@ controller.insert = ({
 }, res) => {
 
   /* ------------------ PREPARACION DE LOS DATOS ----------------------- */
+  body.title = body.title.toLowerCase();
   body.avatar = file.newName;
   /* SQL para insertar fecha actual. */
   body.date = "CURDATE()";
@@ -71,6 +94,8 @@ controller.insert = ({
         else console.log('Imagen ' + file.newName + " Uploaded correctly");
       });
 
+      let sqlUpdateDeveloper = "UPDATE user SET isDeveloper = 1 WHERE id = " + body.id_user;
+      connection.query(sqlUpdateDeveloper, () => {}); //actualizo al user que crea el porfolio
 
       /* CREACION TABLA NM user_portfolio */
       let sqlNM = bbdd.insert("portfolio_file", [
@@ -104,6 +129,7 @@ controller.showHeader = ({
 
 
 
+
 /* NOT USED NOT TESTED */
 controller.countPorfoliosFromUser = ({
   params: {
@@ -118,11 +144,6 @@ controller.countPorfoliosFromUser = ({
       res.send(result[0]);
     });
 };
-
-
-
-
-
 
 /* NOT USED */
 controller.deleteById = ({

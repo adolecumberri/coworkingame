@@ -73,7 +73,7 @@ class login extends React.PureComponent<TProps, IState> {
     return (
       <div
         className="container background-login animated fadeIn slow "
-        style={{ position: "absolute", minWidth: "100vw" }}
+        style={{ position: "absolute", minWidth: "100%", zIndex: 4 }}
       >
         <div
           className="modal-dialog modal-dialog-centered animated  bounceInRight"

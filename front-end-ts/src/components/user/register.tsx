@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 /* ----------------------------Propiedades Del Componente + de la Store------------------------------- */
 interface IProps {
-  registered: any
+  registered: any;
 }
 
 interface IState {
@@ -144,11 +144,11 @@ class register extends React.PureComponent<IProps, IState> {
       error_name
     } = this.state;
     return (
-      <div className="container background-register animated fadeIn "  style={{ position: "absolute", minWidth:"100vw" }}>
-        <div
-          className="modal-dialog modal-dialog-centered animated  bounceInLeft"
-         
-        >
+      <div
+        className="container background-register animated fadeIn "
+        style={{ position: "absolute", minWidth: "100%", zIndex: 4 }}
+      >
+        <div className="modal-dialog modal-dialog-centered animated  bounceInLeft">
           <div className="modal-content container">
             <div className="row"></div>
             <div className="modal-header mt-3 mb-3">

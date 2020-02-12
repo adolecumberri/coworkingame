@@ -21,11 +21,12 @@ class MoreP extends React.PureComponent<IProps, IState> {
   }
   componentDidMount() {
     setTimeout(() => {
-      console.log("hola");
       myFetch({
         path: `/portfolio/user/${this.props.id_user}`,
         method: "GET"
       }).then((json: IPortfolioCard[]) => {
+        console.log("json");
+        console.log(json);
         this.setState({ portfolios_preview: json });
       });
     }, 200);

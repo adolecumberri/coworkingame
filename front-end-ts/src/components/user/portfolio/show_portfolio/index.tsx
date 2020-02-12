@@ -9,6 +9,7 @@ import { IAccount } from "src/interface/IAccount";
 import { myFetch } from "src/utils";
 import { IPortfolioCard } from "src/interface/IPorfolio";
 import { IFile } from "src/interface/IFile";
+import { IUserCard } from "src/interface/IUser";
 
 interface IProps {}
 
@@ -20,8 +21,8 @@ type TProps = IGlobalStateProps & IProps;
 
 interface IState {
   portfolioHeader: IPortfolioCard;
-  shouldIndexReload: boolean;
   portfolio_file: IFile;
+  user: IUserCard;
 }
 
 class ShowPortfolio extends React.PureComponent<TProps, IState> {
@@ -38,7 +39,6 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
         active: 0,
         visible: 0
       },
-      shouldIndexReload: false,
       portfolio_file: {
         id: 0,
         name: "",
@@ -50,11 +50,20 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
         claps: 0,
         visible: 1,
         active: 1
+      },
+      user: {
+        id: 0,
+        name: "",
+        avatar: "",
+        header: "",
+        country: "",
+        state: ""
       }
     };
     this.updatePage = this.updatePage.bind(this);
   }
   updatePage() {
+    console.log("Component Update ");
     let url = window.location.href;
     let id_portfolio = url.substring(url.lastIndexOf("/") + 1);
 
@@ -64,6 +73,11 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
     }).then(json => {
       /* el estado que le paso a la cabecera */
       this.setState({ portfolioHeader: { ...json } });
+      //coger ID_User Respecto al portafolio.
+      myFetch({
+        path: `/user/portfolio/${id_portfolio}`,
+        method: "POST"
+      }).then((user: any) => this.setState({ user: user }));
 
       /* conseguir los archivos para el body */
       setTimeout(() => {
@@ -78,6 +92,7 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
   }
 
   componentDidMount() {
+    console.log("Component did mount ");
     let url = window.location.href;
     let id_portfolio = url.substring(url.lastIndexOf("/") + 1);
 
@@ -87,6 +102,11 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
     }).then(json => {
       /* el estado que le paso a la cabecera */
       this.setState({ portfolioHeader: { ...json } });
+      // coger ID_User Respecto al portafolio.
+      myFetch({
+        path: `/user/portfolio/${id_portfolio}`,
+        method: "POST"
+      }).then((user: any) => this.setState({ user: user }));
 
       /* conseguir los archivos para el body */
       setTimeout(() => {
@@ -101,11 +121,10 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
   }
 
   render() {
-    /* la info del componente. */
-    const id = this.props.account?.id;
-    const userAvatar = this.props.account?.avatar as string;
-    const userName = this.props.account?.name;
-    const { portfolio_file } = this.state;
+    let url = window.location.href;
+    let id_url = url.substring(url.lastIndexOf("/") + 1);
+    const { portfolio_file, user } = this.state;
+
     const {
       id: id_portfolio,
       title,
@@ -120,7 +139,7 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
             <div className="row">
               <div className="col-12">
                 <HeaderP
-                  id_user={(id as unknown) as string}
+                  id_user={(user.id as unknown) as string}
                   id_portfolio={(id_portfolio as unknown) as string}
                   title={title}
                   description={description as string}
@@ -130,7 +149,10 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
             </div>
             <div className="row">
               <div className="col-12">
-                <BodyP id_user={id as number} portfolio_file={portfolio_file} />
+                <BodyP
+                  id_user={user.id as number}
+                  portfolio_file={portfolio_file}
+                />
               </div>
             </div>
           </div>
@@ -138,9 +160,9 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
             <div className="row">
               <div className="col-12">
                 <UserInfo
-                  avatar={userAvatar}
-                  name={userName as string}
-                  id_user={(id as unknown) as string}
+                  avatar={user.avatar as string}
+                  name={user.name as string}
+                  id_user={(user.id as unknown) as string}
                   id_portfolio={(id_portfolio as unknown) as string}
                 />
               </div>
@@ -148,7 +170,7 @@ class ShowPortfolio extends React.PureComponent<TProps, IState> {
             <div className="row">
               <div className="col-12">
                 <MoreP
-                  id_user={(id as unknown) as string}
+                  id_user={(user.id as unknown) as string}
                   id_portfolio={(id_portfolio as unknown) as string}
                   updatePage={this.updatePage}
                 />

@@ -58,7 +58,6 @@ class Categories extends React.PureComponent<IGlobalStateProps, IState> {
   }
 
   updateCategorie(e: any) {
-    console.log("UPDATE SE ACTIVA");
     const id_user = this.props.account?.id;
     const id_profile = e.target.id;
     myFetch({
@@ -71,7 +70,6 @@ class Categories extends React.PureComponent<IGlobalStateProps, IState> {
   render() {
     const { categories, catNotNulls, catNulls } = this.state.profiles;
     const { containedProfiles } = this.state;
-    console.log(this.state);
     return (
       <div className="container">
         <div className="card text-center  mt-4">

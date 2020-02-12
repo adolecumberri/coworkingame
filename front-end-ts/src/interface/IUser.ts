@@ -23,6 +23,15 @@ export interface IAdminUser{
      state: string
  }
 
+ export interface IUserCard {
+     id: number,
+     name : string,
+     avatar: string | null,
+     header: string | null,
+     country : string | null,
+     state : string | null
+ }
+
 export interface IUser {
     id: number,
     email: string | null,

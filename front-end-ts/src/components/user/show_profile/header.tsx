@@ -1,7 +1,7 @@
 import React from "react";
 import { myFetch } from "src/utils";
 import { runInThisContext } from "vm";
-import { API_URL } from "src/constants";
+import { API_URL, LOCAL_URL } from "src/constants";
 import { maxHeaderSize } from "http";
 
 interface IProps {
@@ -48,7 +48,11 @@ class Header extends React.PureComponent<IProps> {
             <img
               alt="User Profile Avatar"
               className="rounded"
-              src={`${API_URL}/multimedia/user_${id_user}/avatar/${avatar}`}
+              src={
+                avatar
+                  ? `${API_URL}/multimedia/user_${id_user}/avatar/${avatar}`
+                  : `${LOCAL_URL}/images/ico_logo100x75.png`
+              }
               style={{ width: "100%", height: "100%" }}
             />
           </div>
@@ -61,7 +65,8 @@ class Header extends React.PureComponent<IProps> {
             color: "#f1f1f1"
           }}
         >
-          {numPorfolios ? numPorfolios : "0"} proyects published by {name}.
+          {numPorfolios ? numPorfolios : "0"} proyects published by&nbsp;
+          <span className="text-capitalize"> {name}</span>.
         </div>
       </div>
     );

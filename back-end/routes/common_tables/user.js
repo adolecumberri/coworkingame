@@ -4,6 +4,7 @@ var {
 var router = Router();
 
 const {
+  getAllDevInfo,
   showAll,
   showById,
   insert,
@@ -11,9 +12,9 @@ const {
   deleteById,
   login,
   getDevInfo,
-  getUserByPortfolioId,
   getImages,
   getNameById,
+  getUserByPortfolioId,
   checkPassword
 } = require("../../controllers/common_tables_controller/user");
 
@@ -26,7 +27,9 @@ router.post("/login", login);
 router.post("/dev_info", getDevInfo);
 router.post("/img/:id", getImages)
 router.post("/check_password", checkPassword);
-// router.post("/portfolio/:id_portfolio", getUserByPortfolioId);
+
+router.post("/getAllDev", getAllDevInfo);
+router.post("/portfolio/:id_portfolio", getUserByPortfolioId);
 
 router.put("/:id", updateById);
 

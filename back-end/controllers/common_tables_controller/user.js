@@ -30,6 +30,8 @@ controller.insert = ({
   body
 }, res) => {
   body.last_visit = "CURDATE()";
+  body.name = body.name.toLowerCase();
+  body.email = body.email.toLowerCase();
   connection.query(bbdd.insert("user", objToArray(body)), (err, result) => {
     if (err) {
       res.sendStatus(400);
@@ -122,6 +124,7 @@ controller.login = ({
   );
 };
 
+/* Para crear el token (creo) */
 controller.getLessData = (req, res) => {
   connection.query(
     bbdd.select("user", ["id", "name", "email", "active", "isAdmin"]),
@@ -132,6 +135,26 @@ controller.getLessData = (req, res) => {
     }
   );
 };
+
+
+/* Sacada de info para crear cards en seccion developers */
+controller.getAllDevInfo = (req, res) => {
+  let sql = 'select id_user, name from user_profile inner join profile on user_profile.id_profile = profile.id order by id_user;';
+
+  connection.query(sql, (err, profiles) => {
+    if (err) throw err;
+    let sql2 = 'SELECT id, name, country, state, avatar, header FROM user WHERE isDeveloper = 1;';
+    connection.query(sql2, (err, result) => {
+      if (err) throw err;
+      res.send({
+        users: result,
+        profiles
+      })
+    })
+  })
+
+}
+
 
 controller.getDevInfo = (req, res) => {
 
@@ -188,8 +211,8 @@ controller.getUserByPortfolioId = ({
   }
 }, res) => {
 
-  let sql = `SELECT user.header, user.avatar, user.name from user` +
-    ` where user.id = (select id_user from portfolio where id = ${id_portfolio})`
+  let sql = `SELECT id, name, avatar, header, country, state from user` +
+    ` where id = (select id_user from portfolio where id = ${id_portfolio});`
   console.log(sql);
   connection.query(sql, (err, result) => {
     if (err) throw err;

@@ -62,6 +62,9 @@ class UserProfile extends React.PureComponent<IProps, IState> {
     let url = window.location.href;
     let id_portfolio = url.substring(url.lastIndexOf("/") + 1);
     /** GET USER BY ID */
+    console.log("id_portfolio");
+
+    console.log(id_portfolio);
     myFetch({
       path: `/user/${id_portfolio}`,
       method: "GET"
@@ -118,12 +121,7 @@ class UserProfile extends React.PureComponent<IProps, IState> {
             style={{ width: "100%" }}
           >
             <div className="col-9 ">
-              <div className="row">
-                <PortfolioData
-                  id_user={id}
-                  portfolios={portfolios_from_index}
-                />
-              </div>
+              <PortfolioData id_user={id} portfolios={portfolios_from_index} />
             </div>
             <div className="col-2">
               <PortfolioUserData
